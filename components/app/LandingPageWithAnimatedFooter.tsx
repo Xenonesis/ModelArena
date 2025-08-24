@@ -1,99 +1,43 @@
 "use client";
-
-import { useEffect } from "react";
-import Link from "next/link";
+import { MessageSquare, Github, Heart, ExternalLink, Zap, Globe, Sparkles, Star, Code2, Users2, Rocket, ChevronRight, Mail, Twitter, ArrowUpRight, GitCompare, ImageIcon, Users } from "lucide-react";
 import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
-import {
-  MessageSquare,
-  Zap,
-  Users,
-  Globe,
-  ArrowRight,
-  Star,
-  GitCompare,
-  Image as ImageIcon
-} from "lucide-react";
-import ThemeToggle from "@/components/ThemeToggle";
-import Footer from "@/components/app/Footer";
-import { AuroraHero } from "@/components/ui/futurastic-hero-section";
+import { useEffect } from "react";
+import Link from "next/link";
+
 import Logo from "@/components/ui/Logo";
+import ThemeToggle from "@/components/ThemeToggle";
+import { AuroraHero } from "@/components/ui/futurastic-hero-section";
 import MultiOrbitSemiCircle from "@/components/ui/multi-orbit-semi-circle";
+import AnimatedFooter from "@/components/ui/animated-footer";
 
-import { LucideIcon } from "lucide-react";
-
-const FeatureCard = ({
-  icon: Icon,
-  title,
-  description,
-  gradient,
-  index,
-  border,
-  boxShadow
-}: {
-  icon: LucideIcon,
-  title: string,
-  description: string,
-  gradient: string,
-  index: number,
-  border: any,
-  boxShadow: any
+// Feature card component
+const FeatureCard = ({ icon: Icon, title, description, gradient, index }: {
+  icon: any;
+  title: string;
+  description: string;
+  gradient: string;
+  index: number;
 }) => (
   <motion.div
-    className="group relative overflow-hidden rounded-2xl bg-gray-950/10 backdrop-blur-sm p-8 hover:bg-gray-950/20 transition-all duration-300"
-    style={{
-      border,
-      transformStyle: "preserve-3d",
-      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)"
-    }}
-    initial={{ opacity: 0, y: 50, rotateX: -15 }}
-    animate={{ opacity: 1, y: 0, rotateX: 0 }}
-    transition={{
-      delay: 0.2 + index * 0.1,
-      duration: 0.8,
-      type: "spring",
-      stiffness: 100
-    }}
-    whileHover={{
-      scale: 1.015,
-      y: -8,
-      boxShadow,
-      transition: { duration: 0.3 }
-    }}
-    whileTap={{ scale: 0.985 }}
+    className="group relative p-6 rounded-2xl bg-gray-950/30 border border-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm"
+    initial={{ opacity: 0, y: 50 }}
+    whileInView={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.6, delay: index * 0.1 }}
+    viewport={{ once: true }}
+    whileHover={{ y: -5, scale: 1.02 }}
   >
-    <div className={`absolute inset-0 ${gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
-    <div className="relative z-10">
-      <motion.div
-        className="mb-6 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 group-hover:bg-white/20 transition-all duration-300 shadow-lg"
-        whileHover={{
-          rotate: 360,
-          scale: 1.1,
-          transition: { duration: 0.3 }
-        }}
-        style={{ boxShadow: "0 8px 24px rgba(255, 255, 255, 0.1)" }}
-      >
-        <Icon className="w-8 h-8 text-white" />
-      </motion.div>
-      <motion.h3
-        className="text-2xl font-bold text-white mb-4 bg-gradient-to-br from-white to-gray-300 bg-clip-text text-transparent"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.4 + index * 0.1 }}
-      >
-        {title}
-      </motion.h3>
-      <motion.p
-        className="text-gray-300 leading-relaxed text-base"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.5 + index * 0.1 }}
-      >
-        {description}
-      </motion.p>
+    <div className={`w-12 h-12 rounded-xl ${gradient} flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300`}>
+      <Icon className="w-6 h-6 text-white" />
     </div>
-
+    <h3 className="text-xl font-semibold text-white mb-3 group-hover:text-blue-300 transition-colors">
+      {title}
+    </h3>
+    <p className="text-gray-400 leading-relaxed group-hover:text-gray-300 transition-colors">
+      {description}
+    </p>
+    
     {/* Animated border gradient */}
     <motion.div
       className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
@@ -105,10 +49,9 @@ const FeatureCard = ({
   </motion.div>
 );
 
-
 const COLORS_TOP = ["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"];
 
-export default function LandingPage() {
+export default function LandingPageWithAnimatedFooter() {
   const color = useMotionValue(COLORS_TOP[0]);
 
   useEffect(() => {
@@ -159,10 +102,7 @@ export default function LandingPage() {
     }
   ];
 
-
   const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
-  const border = useMotionTemplate`1px solid ${color}`;
-  const boxShadow = useMotionTemplate`0px 4px 24px ${color}`;
 
   return (
     <motion.div 
@@ -194,7 +134,7 @@ export default function LandingPage() {
             <ThemeToggle />
           </motion.div>
           <motion.a
-            href="https://github.com/Xenonesis/ModelArena.git"
+            href="https://github.com/Xenonesis/Open-Fiesta-Clone"
             target="_blank"
             rel="noopener noreferrer"
             className="group flex items-center space-x-2 px-4 py-2 rounded-full bg-gray-950/10 border border-white/20 text-gray-200 hover:bg-gray-950/50 hover:text-white transition-all duration-300"
@@ -228,11 +168,7 @@ export default function LandingPage() {
             viewport={{ once: true, margin: "-100px" }}
           >
             <motion.span
-              className="mb-6 inline-block rounded-full bg-gray-950/20 px-4 py-2 text-sm font-medium backdrop-blur-sm"
-              style={{
-                border,
-                boxShadow,
-              }}
+              className="mb-6 inline-block rounded-full bg-gray-600/50 px-4 py-2 text-sm font-medium"
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6 }}
@@ -279,21 +215,33 @@ export default function LandingPage() {
             viewport={{ once: true, margin: "-50px" }}
           >
             {features.map((feature, index) => (
-              <FeatureCard key={index} {...feature} index={index} border={border} boxShadow={boxShadow} />
+              <FeatureCard key={index} {...feature} index={index} />
             ))}
           </motion.div>
         </motion.section>
 
         {/* Integrations Section */}
         <MultiOrbitSemiCircle />
-
-        {/* Footer */}
-        <Footer 
-          githubOwner="Xenonesis"
-          githubRepo="ModelArena"
-          className="mt-12 relative z-10"
-        />
       </div>
+
+      {/* Animated Footer - Replaces the original footer */}
+      <AnimatedFooter
+        leftLinks={[
+          { href: "/terms", label: "Terms & Policies" },
+          { href: "/privacy", label: "Privacy Policy" },
+          { href: "/support", label: "Support" },
+          { href: "/docs", label: "Documentation" },
+        ]}
+        rightLinks={[
+          { href: "/about", label: "About" },
+          { href: "/blog", label: "Blog" },
+          { href: "/careers", label: "Careers" },
+          { href: "https://github.com/Xenonesis/Open-Fiesta-Clone", label: "GitHub" },
+          { href: "https://github.com/Xenonesis", label: "Creator" },
+        ]}
+        copyrightText="ModelArena 2025. All Rights Reserved"
+        barCount={25}
+      />
     </motion.div>
   );
 }

@@ -10,7 +10,7 @@ function abortAll() {
   Object.values(abortControllers).forEach(controller => {
     try {
       controller.abort();
-    } catch (e) {
+    } catch {
       // ignore
     }
   });

@@ -23,7 +23,7 @@ export const AuroraHero = () => {
       repeat: Infinity,
       repeatType: "mirror",
     });
-  }, []);
+  }, [color]);
 
   const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
   const border = useMotionTemplate`1px solid ${color}`;
@@ -64,6 +64,62 @@ export const AuroraHero = () => {
           Start Comparing
           <FiArrowRight className="transition-transform group-hover:-rotate-45 group-active:-rotate-12" />
         </motion.button>
+        
+        {/* Connected Features Section */}
+        <div className="mt-16 flex flex-col items-center">
+          <motion.div
+            style={{
+              border,
+              boxShadow,
+            }}
+            className="rounded-full bg-gray-950/20 px-6 py-3 backdrop-blur-sm"
+          >
+            <span className="text-lg font-medium text-gray-200">✨ Powerful Features</span>
+          </motion.div>
+          
+          {/* Connection Line */}
+          <motion.div 
+            className="w-px h-8 my-4"
+            style={{
+              background: `linear-gradient(to bottom, ${color}, transparent)`,
+            }}
+            animate={{
+              opacity: [0.3, 1, 0.3],
+            }}
+            transition={{
+              duration: 2,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+          
+          {/* Connected Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
+            <motion.div
+              style={{
+                border,
+                background: `linear-gradient(135deg, ${color}10, transparent)`,
+              }}
+              className="p-4 rounded-lg backdrop-blur-sm"
+              whileHover={{ scale: 1.05 }}
+            >
+              <h3 className="text-lg font-semibold text-gray-200 mb-2">Multi-Model Chat</h3>
+              <p className="text-gray-400 text-sm">Compare responses from multiple AI models simultaneously</p>
+            </motion.div>
+            
+            <motion.div
+              style={{
+                border,
+                background: `linear-gradient(135deg, ${color}10, transparent)`,
+              }}
+              className="p-4 rounded-lg backdrop-blur-sm"
+              whileHover={{ scale: 1.05 }}
+            >
+              <h3 className="text-lg font-semibold text-gray-200 mb-2">Real-time Analysis</h3>
+              <p className="text-gray-400 text-sm">Get instant insights and performance comparisons</p>
+            </motion.div>
+          </div>
+        </div>
       </div>
 
       <div className="absolute inset-0 z-0">

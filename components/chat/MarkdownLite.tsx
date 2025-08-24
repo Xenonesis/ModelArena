@@ -109,7 +109,7 @@ function BlockRenderer({ text }: { text: string }) {
     if (heading) {
       const level = heading[1].length;
       const content = heading[2].trim();
-      const Tag = (`h${Math.min(6, Math.max(1, level))}` as unknown) as React.ElementType;
+      const Tag = `h${Math.min(6, Math.max(1, level))}` as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
       nodes.push(
         <Tag key={`h-${i}`} className={`mt-2 mb-1 font-semibold tracking-tight ${
           level <= 2 ? 'text-base md:text-lg' : level === 3 ? 'text-sm md:text-base' : 'text-sm'

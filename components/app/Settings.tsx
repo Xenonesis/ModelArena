@@ -38,14 +38,14 @@ export default function Settings({ compact }: SettingsProps) {
     <div>
       <button
         onClick={() => setOpen(true)}
-        className={`inline-flex items-center gap-1.5 text-xs ${
+        className={`group inline-flex items-center gap-1.5 text-xs ${
           compact ? "h-9 w-9 justify-center px-0" : "px-3 py-2"
-        } rounded-md border border-white/15 bg-white/5 hover:bg-white/10 shadow accent-focus`}
+        } rounded-lg border border-white/[0.15] bg-white/[0.05] hover:bg-white/[0.12] hover:border-white/[0.25] shadow-sm accent-focus transition-all duration-200 ease-out`}
         title="Settings"
         aria-label="Settings"
       >
-        <Cog size={14} />
-        {!compact && <span>Settings</span>}
+        <Cog size={14} className="transition-transform duration-200 group-hover:rotate-90" />
+        {!compact && <span className="font-medium text-white/90 group-hover:text-white transition-colors duration-200">Settings</span>}
       </button>
       {open &&
         typeof document !== "undefined" &&

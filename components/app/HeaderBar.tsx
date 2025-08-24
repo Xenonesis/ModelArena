@@ -31,64 +31,96 @@ export default function HeaderBar({
   onOpenModelsModal,
 }: Props) {
   return (
-    <div
-      className={["flex items-center mb-3 gap-2 w-full", className || ""].join(" ")}
+    <header
+      className={[
+        "flex items-center justify-between w-full mb-4 px-1 py-2",
+        "bg-gradient-to-r from-white/[0.02] via-white/[0.05] to-white/[0.02]",
+        "border-b border-white/[0.08] backdrop-blur-sm",
+        "transition-all duration-300 ease-out",
+        className || ""
+      ].join(" ")}
     >
-      {/* Left: author + menu */}
-      <div className="flex items-center gap-2 min-w-0">
+      {/* Left Section: Menu + Author */}
+      <div className="flex items-center gap-3 min-w-0 flex-shrink-0">
         <button
           onClick={onOpenMenu}
-          className="lg:hidden inline-flex items-center justify-center h-7 w-8 rounded-md bg-white/10 border border-white/15 text-white hover:bg-white/15"
+          className="lg:hidden group inline-flex items-center justify-center h-8 w-8 rounded-lg bg-white/[0.08] border border-white/[0.12] text-white/80 hover:bg-white/[0.15] hover:text-white hover:border-white/[0.2] transition-all duration-200 ease-out"
           aria-label="Open menu"
           title="Menu"
         >
-          <MenuIcon size={16} />
+          <MenuIcon size={16} className="transition-transform duration-200 group-hover:scale-110" />
         </button>
+        
         <a
           href={authorLink}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-xs text-zinc-300 hover:text-white"
+          className="group inline-flex items-center gap-2.5 text-xs text-zinc-400 hover:text-white transition-all duration-200 ease-out"
           title={`Open ${authorName} on GitHub`}
         >
-          <Image
-            src={authorImageSrc}
-            alt={`${authorName} avatar`}
-            width={20}
-            height={20}
-            className="h-5 w-5 rounded-full object-cover"
-          />
-          <span className="opacity-90 hidden sm:inline text-sm">
-            Made with ❤️ by{" "}
-            <span className="font-semibold underline decoration-dotted">
+          <div className="relative">
+            <Image
+              src={authorImageSrc}
+              alt={`${authorName} avatar`}
+              width={22}
+              height={22}
+              className="h-5.5 w-5.5 rounded-full object-cover ring-1 ring-white/[0.15] group-hover:ring-white/[0.3] transition-all duration-200"
+            />
+            <div className="absolute inset-0 rounded-full bg-gradient-to-br from-white/[0.1] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200" />
+          </div>
+          <span className="opacity-90 hidden sm:inline text-sm font-medium">
+            Made with{" "}
+            <span className="text-red-400 animate-pulse">❤️</span>
+            {" "}by{" "}
+            <span className="font-semibold text-white/90 underline decoration-dotted decoration-white/[0.4] group-hover:decoration-white/[0.8] transition-all duration-200">
               {authorName}
             </span>
           </span>
         </a>
       </div>
 
-      {/* Center: title stays centered in available space (hidden on mobile) */}
-      <div className="flex-1 text-center hidden sm:block">
-        <h1 className="text-xl md:text-2xl font-extrabold tracking-tight bg-gradient-to-r from-white via-white/90 to-white/70 bg-clip-text text-transparent drop-shadow-[0_1px_0_rgba(255,255,255,0.12)] select-none pointer-events-none">
+      {/* Center Section: Title */}
+      <div className="flex-1 text-center hidden sm:block px-4">
+        <h1 className="text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-white/95 to-white/80 bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] select-none pointer-events-none">
           {title}
         </h1>
       </div>
 
-      {/* Right cluster order (left→right visual): Change models, Custom models (icon), Theme (icon), Settings (icon), GitHub */}
-      <div className="flex items-center gap-2 z-10 ml-auto">
-        <button
-          onClick={() => onOpenModelsModal && onOpenModelsModal()}
-          className="inline-flex items-center gap-1.5 text-xs h-9 w-9 justify-center rounded-md border border-white/15 bg-white/5 hover:bg-white/10 shadow accent-focus"
-          title="Change models"
-          aria-label="Change models"
-        >
-          <Layers size={14} />
-        </button>
-        <CustomModels compact />
-        <ThemeToggle compact />
-        <Settings compact />
-        <GithubStar owner={githubOwner} repo={githubRepo} />
+      {/* Right Section: Action Buttons */}
+      <div className="flex items-center gap-2 z-10 flex-shrink-0">
+        <div className="hidden md:flex items-center gap-2">
+          <button
+            onClick={() => onOpenModelsModal && onOpenModelsModal()}
+            className="group inline-flex items-center gap-2 text-xs h-9 px-3 rounded-lg border border-white/[0.15] bg-white/[0.05] hover:bg-white/[0.12] hover:border-white/[0.25] shadow-sm accent-focus transition-all duration-200 ease-out"
+            title="Change models"
+            aria-label="Change models"
+          >
+            <Layers size={14} className="transition-transform duration-200 group-hover:scale-110" />
+            <span className="font-medium text-white/90">Models</span>
+          </button>
+        </div>
+        
+        <div className="md:hidden">
+          <button
+            onClick={() => onOpenModelsModal && onOpenModelsModal()}
+            className="group inline-flex items-center justify-center h-9 w-9 rounded-lg border border-white/[0.15] bg-white/[0.05] hover:bg-white/[0.12] hover:border-white/[0.25] shadow-sm accent-focus transition-all duration-200 ease-out"
+            title="Change models"
+            aria-label="Change models"
+          >
+            <Layers size={14} className="transition-transform duration-200 group-hover:scale-110" />
+          </button>
+        </div>
+
+        <div className="flex items-center gap-1.5">
+          <CustomModels compact />
+          <ThemeToggle compact />
+          <Settings compact />
+        </div>
+        
+        <div className="ml-1">
+          <GithubStar owner={githubOwner} repo={githubRepo} />
+        </div>
       </div>
-    </div>
+    </header>
   );
 }

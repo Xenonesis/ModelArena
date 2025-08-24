@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import Link from "next/link";
-import { motion } from "framer-motion";
-import { useTheme } from "@/lib/themeContext";
-import { BACKGROUND_STYLES } from "@/lib/themes";
+import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion";
+import { Canvas } from "@react-three/fiber";
+import { Stars } from "@react-three/drei";
 import {
   MessageSquare,
   Zap,
@@ -12,12 +12,11 @@ import {
   Globe,
   ArrowRight,
   Star,
-  ChevronRight,
-  Bot,
   GitCompare,
   Image as ImageIcon
 } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
+import Footer from "@/components/app/Footer";
 import { AuroraHero } from "@/components/ui/futurastic-hero-section";
 
 import { LucideIcon } from "lucide-react";
@@ -36,7 +35,7 @@ const FeatureCard = ({
   index: number
 }) => (
   <motion.div
-    className="group relative overflow-hidden rounded-xl bg-black/20 backdrop-blur-sm border border-white/10 p-6 hover:border-white/20"
+    className="group relative overflow-hidden rounded-2xl bg-gray-950/10 backdrop-blur-sm border border-white/20 p-8 hover:bg-gray-950/50 transition-all duration-300"
     initial={{ opacity: 0, y: 50, rotateX: -15 }}
     animate={{ opacity: 1, y: 0, rotateX: 0 }}
     transition={{
@@ -46,28 +45,31 @@ const FeatureCard = ({
       stiffness: 100
     }}
     whileHover={{
-      scale: 1.05,
+      scale: 1.015,
       y: -8,
-      rotateX: 5,
       transition: { duration: 0.3 }
     }}
-    whileTap={{ scale: 0.98 }}
-    style={{ transformStyle: "preserve-3d" }}
+    whileTap={{ scale: 0.985 }}
+    style={{ 
+      transformStyle: "preserve-3d",
+      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.3)"
+    }}
   >
-    <div className={`absolute inset-0 ${gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+    <div className={`absolute inset-0 ${gradient} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
     <div className="relative z-10">
       <motion.div
-        className="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-lg bg-white/10 group-hover:bg-white/20 transition-colors duration-300"
+        className="mb-6 inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 group-hover:bg-white/20 transition-all duration-300 shadow-lg"
         whileHover={{
           rotate: 360,
           scale: 1.1,
           transition: { duration: 0.3 }
         }}
+        style={{ boxShadow: "0 8px 24px rgba(255, 255, 255, 0.1)" }}
       >
-        <Icon className="w-6 h-6 text-white" />
+        <Icon className="w-8 h-8 text-white" />
       </motion.div>
       <motion.h3
-        className="text-xl font-semibold text-white mb-2"
+        className="text-2xl font-bold text-white mb-4 bg-gradient-to-br from-white to-gray-300 bg-clip-text text-transparent"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 + index * 0.1 }}
@@ -75,7 +77,7 @@ const FeatureCard = ({
         {title}
       </motion.h3>
       <motion.p
-        className="text-gray-300 leading-relaxed"
+        className="text-gray-300 leading-relaxed text-base"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 + index * 0.1 }}
@@ -86,136 +88,29 @@ const FeatureCard = ({
 
     {/* Animated border gradient */}
     <motion.div
-      className="absolute inset-0 rounded-xl"
-      initial={{ background: "linear-gradient(45deg, transparent, transparent)" }}
-      whileHover={{
-        background: `linear-gradient(45deg, ${gradient.includes('blue') ? 'rgba(59, 130, 246, 0.2)' : gradient.includes('green') ? 'rgba(16, 185, 129, 0.2)' : gradient.includes('purple') ? 'rgba(147, 51, 234, 0.2)' : gradient.includes('orange') ? 'rgba(249, 115, 22, 0.2)' : gradient.includes('indigo') ? 'rgba(99, 102, 241, 0.2)' : 'rgba(234, 179, 8, 0.2)'}, transparent, transparent)`,
-        transition: { duration: 0.3 }
+      className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+      style={{
+        background: `linear-gradient(45deg, ${gradient.includes('blue') ? 'rgba(59, 130, 246, 0.1)' : gradient.includes('green') ? 'rgba(16, 185, 129, 0.1)' : gradient.includes('purple') ? 'rgba(147, 51, 234, 0.1)' : gradient.includes('orange') ? 'rgba(249, 115, 22, 0.1)' : gradient.includes('indigo') ? 'rgba(99, 102, 241, 0.1)' : 'rgba(234, 179, 8, 0.1)'}, transparent, transparent)`,
+        boxShadow: `0 0 40px ${gradient.includes('blue') ? 'rgba(59, 130, 246, 0.2)' : gradient.includes('green') ? 'rgba(16, 185, 129, 0.2)' : gradient.includes('purple') ? 'rgba(147, 51, 234, 0.2)' : gradient.includes('orange') ? 'rgba(249, 115, 22, 0.2)' : gradient.includes('indigo') ? 'rgba(99, 102, 241, 0.2)' : 'rgba(234, 179, 8, 0.2)'}`
       }}
     />
   </motion.div>
 );
 
-const ModelBadge = ({ name, color, index }: { name: string, color: string, index: number }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20, scale: 0.8 }}
-    animate={{ opacity: 1, y: 0, scale: 1 }}
-    transition={{
-      delay: 0.8 + index * 0.1,
-      duration: 0.6,
-      type: "spring",
-      stiffness: 100
-    }}
-    whileHover={{
-      scale: 1.05,
-      y: -2,
-      transition: { duration: 0.2 }
-    }}
-    className={`inline-flex items-center px-3 py-1 rounded-full bg-${color}-500/20 border border-${color}-500/30 text-${color}-300 text-sm font-medium cursor-pointer`}
-  >
-    <Bot className="w-3 h-3 mr-1" />
-    {name}
-  </motion.div>
-);
 
-// Animated particle component for background
-const FloatingParticle = ({ delay = 0 }: { delay?: number }) => {
-  // Use default dimensions for SSR, will be updated on client
-  const defaultWidth = 1920;
-  const defaultHeight = 1080;
-
-  return (
-    <motion.div
-      className="absolute w-2 h-2 bg-blue-400/30 rounded-full"
-      initial={{
-        x: Math.random() * defaultWidth,
-        y: Math.random() * defaultHeight,
-        opacity: 0
-      }}
-      animate={{
-        x: [
-          Math.random() * defaultWidth,
-          Math.random() * defaultWidth,
-          Math.random() * defaultWidth
-        ],
-        y: [
-          Math.random() * defaultHeight,
-          Math.random() * defaultHeight,
-          Math.random() * defaultHeight
-        ],
-        opacity: [0, 0.6, 0]
-      }}
-      transition={{
-        duration: 20 + Math.random() * 10,
-        delay: delay,
-        repeat: Infinity,
-        ease: "linear"
-      }}
-    />
-  );
-};
-
-// Animated text component for word-by-word reveal
-const AnimatedText = ({ text, className, delay = 0 }: { text: string, className?: string, delay?: number }) => {
-  const words = text.split(" ");
-
-  const container = {
-    hidden: { opacity: 0 },
-    visible: (i = 1) => ({
-      opacity: 1,
-      transition: { staggerChildren: 0.12, delayChildren: delay },
-    }),
-  };
-
-  const child = {
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: "spring" as const,
-        damping: 12,
-        stiffness: 100,
-      },
-    },
-    hidden: {
-      opacity: 0,
-      y: 20,
-      transition: {
-        type: "spring" as const,
-        damping: 12,
-        stiffness: 100,
-      },
-    },
-  };
-
-  return (
-    <motion.div
-      className={`inline-block ${className}`}
-      variants={container}
-      initial="hidden"
-      animate="visible"
-    >
-      {words.map((word, index) => (
-        <motion.span
-          key={index}
-          className="inline-block mr-2"
-          variants={child}
-        >
-          {word}
-        </motion.span>
-      ))}
-    </motion.div>
-  );
-};
+const COLORS_TOP = ["#13FFAA", "#1E67C6", "#CE84CF", "#DD335C"];
 
 export default function LandingPage() {
-  const { theme } = useTheme();
-  const [isVisible, setIsVisible] = useState(false);
-  const backgroundClass = BACKGROUND_STYLES[theme.background].className;
+  const color = useMotionValue(COLORS_TOP[0]);
 
   useEffect(() => {
-    setIsVisible(true);
-  }, []);
+    animate(color, COLORS_TOP, {
+      ease: "easeInOut",
+      duration: 10,
+      repeat: Infinity,
+      repeatType: "mirror",
+    });
+  }, [color]);
 
   const features = [
     {
@@ -256,53 +151,64 @@ export default function LandingPage() {
     }
   ];
 
-  const supportedModels = [
-    { name: "Gemini 2.5 Flash", color: "blue" },
-    { name: "Llama 3.3 70B", color: "green" },
-    { name: "Qwen 2.5 72B", color: "purple" },
-    { name: "DeepSeek R1", color: "orange" },
-    { name: "Claude 3.5", color: "indigo" },
-    { name: "GPT-4", color: "teal" }
-  ];
+
+  const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
+  const border = useMotionTemplate`1px solid ${color}`;
+  const boxShadow = useMotionTemplate`0px 4px 24px ${color}`;
 
   return (
-    <div className={`min-h-screen w-full ${backgroundClass} relative text-white overflow-hidden`}>
-      {/* Animated Background Particles */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-95">
-        {[...Array(15)].map((_, i) => (
-          <FloatingParticle key={i} delay={i * 0.5} />
-        ))}
+    <motion.div 
+      style={{ backgroundImage }}
+      className="min-h-screen w-full relative text-gray-200 overflow-hidden bg-gray-950"
+    >
+      {/* 3D Stars Background */}
+      <div className="absolute inset-0 z-0">
+        <Canvas>
+          <Stars radius={50} count={2500} factor={4} fade speed={2} />
+        </Canvas>
       </div>
 
       {/* Navigation */}
       <motion.nav
-        className="relative z-20 flex justify-between items-center px-6 py-4"
+        className="relative z-20 flex justify-between items-center px-6 py-6"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
+        <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
           <motion.div
-            className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center"
+            className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-lg"
             whileHover={{ rotate: 360, scale: 1.1 }}
             transition={{ duration: 0.3 }}
+            style={{ boxShadow: "0 8px 32px rgba(59, 130, 246, 0.3)" }}
           >
-            <MessageSquare className="w-5 h-5 text-white" />
+            <MessageSquare className="w-6 h-6 text-white" />
           </motion.div>
-          <span className="text-xl font-bold">ModelArena</span>
+          <span className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            ModelArena
+          </span>
         </Link>
-        <div className="flex items-center space-x-4">
-          <ThemeToggle />
+        <div className="flex items-center space-x-6">
+          <motion.div
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <ThemeToggle />
+          </motion.div>
           <motion.a
             href="https://github.com/Xenonesis/ModelArena.git"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center space-x-1 text-gray-300 hover:text-white transition-colors"
+            className="group flex items-center space-x-2 px-4 py-2 rounded-full bg-gray-950/10 border border-white/20 text-gray-200 hover:bg-gray-950/50 hover:text-white transition-all duration-300"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            style={{ 
+              border: "1px solid rgba(255, 255, 255, 0.2)",
+              boxShadow: "0 4px 16px rgba(0, 0, 0, 0.1)"
+            }}
           >
-            <Star className="w-4 h-4" />
-            <span>GitHub</span>
+            <Star className="w-4 h-4 group-hover:text-yellow-300 transition-colors" />
+            <span className="font-medium">GitHub</span>
           </motion.a>
         </div>
       </motion.nav>
@@ -312,7 +218,10 @@ export default function LandingPage() {
         <AuroraHero />
 
         {/* Features Grid */}
-        <div className="max-w-6xl mx-auto pb-20">
+        <motion.section 
+          className="max-w-6xl mx-auto pb-20 px-4"
+          style={{ backgroundImage }}
+        >
           <motion.div
             className="text-center mb-16"
             initial={{ opacity: 0, y: 50 }}
@@ -320,8 +229,17 @@ export default function LandingPage() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             viewport={{ once: true, margin: "-100px" }}
           >
+            <motion.span
+              className="mb-6 inline-block rounded-full bg-gray-600/50 px-4 py-2 text-sm font-medium"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              ✨ Powerful Features
+            </motion.span>
             <motion.h2
-              className="text-4xl md:text-5xl font-bold mb-6"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -329,7 +247,7 @@ export default function LandingPage() {
             >
               Why Choose{" "}
               <motion.span
-                className="bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent"
+                className="bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent"
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
@@ -341,7 +259,7 @@ export default function LandingPage() {
               ?
             </motion.h2>
             <motion.p
-              className="text-xl text-gray-300 max-w-2xl mx-auto"
+              className="text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
@@ -362,35 +280,47 @@ export default function LandingPage() {
               <FeatureCard key={index} {...feature} index={index} />
             ))}
           </motion.div>
-        </div>
+        </motion.section>
 
         {/* CTA Section */}
-        <motion.div
-          className="max-w-4xl mx-auto text-center pb-20"
+        <motion.section
+          className="max-w-4xl mx-auto text-center pb-20 px-4"
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, ease: "easeOut" }}
           viewport={{ once: true, margin: "-100px" }}
         >
           <motion.div
-            className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 backdrop-blur-sm border border-white/10 rounded-2xl p-12 relative overflow-hidden"
+            className="relative overflow-hidden rounded-3xl bg-gray-950/10 backdrop-blur-sm border border-white/20 p-12 md:p-16"
             whileHover={{
-              scale: 1.02,
-              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)"
+              scale: 1.015,
             }}
             transition={{ duration: 0.3 }}
+            style={{ 
+              boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.5)",
+            }}
           >
             {/* Animated background gradient */}
             <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-blue-500/5 to-purple-600/5"
+              className="absolute inset-0 bg-gradient-to-r from-blue-500/5 via-purple-600/5 to-pink-500/5"
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               transition={{ duration: 2, delay: 0.5 }}
               viewport={{ once: true }}
             />
 
+            <motion.span
+              className="mb-6 inline-block rounded-full bg-gray-600/50 px-4 py-2 text-sm font-medium relative z-10"
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              🚀 Ready to Launch
+            </motion.span>
+
             <motion.h2
-              className="text-3xl md:text-4xl font-bold mb-4 relative z-10"
+              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 relative z-10 bg-gradient-to-br from-white to-gray-400 bg-clip-text text-transparent"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -399,7 +329,7 @@ export default function LandingPage() {
               Ready to Start Exploring?
             </motion.h2>
             <motion.p
-              className="text-xl text-gray-300 mb-8 relative z-10"
+              className="text-xl md:text-2xl text-gray-300 mb-10 relative z-10 max-w-3xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
@@ -414,67 +344,46 @@ export default function LandingPage() {
               transition={{ duration: 0.8, delay: 0.6 }}
               viewport={{ once: true }}
             >
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <motion.button
+                onClick={() => window.location.href = '/chat'}
+                style={{
+                  border,
+                  boxShadow,
+                }}
+                whileHover={{
+                  scale: 1.015,
+                }}
+                whileTap={{
+                  scale: 0.985,
+                }}
+                className="group relative flex w-fit items-center gap-2 rounded-full bg-gray-950/10 px-8 py-4 text-gray-50 transition-colors hover:bg-gray-950/50 cursor-pointer mx-auto text-lg font-medium"
               >
-                <Link
-                  href="/chat"
-                  className="group inline-flex items-center px-10 py-5 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl text-lg relative z-10"
+                <motion.span
+                  initial={{ x: 0 }}
+                  whileHover={{ x: -4 }}
+                  transition={{ duration: 0.2 }}
                 >
-                  <motion.span
-                    initial={{ x: 0 }}
-                    whileHover={{ x: -8 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    Get Started Now
-                  </motion.span>
-                  <motion.div
-                    className="ml-2"
-                    initial={{ x: 0 }}
-                    whileHover={{ x: 8 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <ChevronRight className="w-6 h-6" />
-                  </motion.div>
-                </Link>
-              </motion.div>
+                  Start Comparing
+                </motion.span>
+                <motion.div
+                  initial={{ x: 0, rotate: 0 }}
+                  whileHover={{ x: 4, rotate: -45 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ArrowRight className="w-5 h-5" />
+                </motion.div>
+              </motion.button>
             </motion.div>
           </motion.div>
-        </motion.div>
+        </motion.section>
 
         {/* Footer */}
-        <footer className="max-w-6xl mx-auto border-t border-white/10 pt-12 pb-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <div className="w-6 h-6 rounded bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center">
-                <MessageSquare className="w-4 h-4 text-white" />
-              </div>
-              <span className="font-semibold">ModelArena</span>
-            </div>
-            <div className="flex items-center space-x-6 text-gray-400">
-              <a href="https://github.com/Xenonesis/ModelArena.git" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">
-                GitHub
-              </a>
-              <span className="text-sm flex items-center space-x-2">
-                <img
-                  src="https://avatars.githubusercontent.com/Xenonesis"
-                  alt="Xenonesis GitHub Profile"
-                  className="w-5 h-5 rounded-full"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-                <span>Made with ❤️ by{" "}
-                  <a href="https://github.com/Xenonesis" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:text-blue-300 transition-colors">
-                    Xenonesis
-                  </a>
-                </span>
-              </span>
-            </div>
-          </div>
-        </footer>
+        <Footer 
+          githubOwner="Xenonesis"
+          githubRepo="ModelArena"
+          className="mt-12 relative z-10"
+        />
       </div>
-    </div>
+    </motion.div>
   );
 }

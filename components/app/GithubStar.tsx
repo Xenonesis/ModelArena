@@ -73,23 +73,25 @@ export default function GithubStar({ owner, repo, className }: Props) {
       target="_blank"
       rel="noopener noreferrer"
       className={[
-        "group inline-flex items-center gap-2 px-2.5 py-1 rounded-full border border-white/15",
-        "text-xs md:text-sm",
+        "group inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/[0.15]",
+        "bg-white/[0.05] hover:bg-white/[0.12] hover:border-white/[0.25]",
+        "text-xs md:text-sm transition-all duration-200 ease-out",
+        "shadow-sm hover:shadow-md",
         className || "",
       ].join(" ")}
       title="Star on GitHub"
     >
       {/* Left: circular chip with GitHub icon */}
-      <span className="h-6 w-6 md:h-6 md:w-6 rounded-full border border-white/15 bg-white/5 group-hover:bg-white/10 inline-flex items-center justify-center">
-        <Github size={14} className="text-white/90" />
+      <span className="h-6 w-6 rounded-full border border-white/[0.15] bg-white/[0.08] group-hover:bg-white/[0.15] inline-flex items-center justify-center transition-all duration-200">
+        <Github size={14} className="text-white/90 group-hover:text-white transition-colors duration-200" />
       </span>
       {/* Middle: transparent label */}
-      <span className="inline-flex items-center gap-1 text-white">
-        <Star size={14} className="text-yellow-300" />
-        <span>Star</span>
+      <span className="inline-flex items-center gap-1.5 text-white/90 group-hover:text-white transition-colors duration-200">
+        <Star size={14} className="text-yellow-400 group-hover:text-yellow-300 transition-colors duration-200" />
+        <span className="font-medium">Star</span>
       </span>
       {/* Right: count chip */}
-      <span className="h-6 md:h-6 rounded-full border border-white/15 bg-white/5 group-hover:bg-white/10 inline-flex items-center justify-center px-2 tabular-nums text-white/90 min-w-[2.25rem] text-center font-medium">
+      <span className="h-6 rounded-full border border-white/[0.15] bg-white/[0.08] group-hover:bg-white/[0.15] inline-flex items-center justify-center px-2.5 tabular-nums text-white/90 group-hover:text-white min-w-[2.5rem] text-center font-semibold transition-all duration-200">
         {countText}
       </span>
     </a>

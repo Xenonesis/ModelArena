@@ -21,8 +21,35 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ModelArena",
-  description: "Compare and chat with multiple AI models side-by-side",
+  title: "ModelArena - AI Model Comparison Platform",
+  description: "Compare and chat with multiple AI models side-by-side. Experience real-time streaming, multi-model comparison, and open-source AI playground.",
+  keywords: "AI, machine learning, model comparison, chat, OpenAI, Anthropic, Gemini, open source",
+  authors: [{ name: "Xenonesis", url: "https://github.com/Xenonesis" }],
+  creator: "Xenonesis",
+  openGraph: {
+    title: "ModelArena - AI Model Comparison Platform",
+    description: "Compare and chat with multiple AI models side-by-side",
+    url: "https://modelarena.dev",
+    siteName: "ModelArena",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ModelArena - AI Model Comparison Platform",
+    description: "Compare and chat with multiple AI models side-by-side",
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-16x16.svg', sizes: '16x16', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.svg',
+    apple: {
+      url: '/apple-touch-icon.svg',
+      sizes: '180x180',
+      type: 'image/svg+xml',
+    },
+  },
 };
 
 export const viewport: Viewport = {

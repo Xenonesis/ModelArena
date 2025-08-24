@@ -2,6 +2,7 @@
 import { MessageSquare, Github, Heart, ExternalLink, Zap, Globe, Sparkles, Star, Code2, Users2, Rocket, ChevronRight, Mail, Twitter, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Logo from "@/components/ui/Logo";
 
 type FooterProps = {
   className?: string;
@@ -56,24 +57,7 @@ export default function Footer({
         >
           {/* Brand Section */}
           <div className="flex items-center gap-4 group">
-            <motion.div 
-              className="relative"
-              whileHover={{ scale: 1.1, rotate: 360 }}
-              transition={{ duration: 0.4 }}
-            >
-              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-xl">
-                <MessageSquare className="w-7 h-7 text-white" />
-              </div>
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-400 to-purple-500 opacity-0 group-hover:opacity-30 blur-lg transition-all duration-300" />
-            </motion.div>
-            <div className="flex flex-col">
-              <span className="font-bold text-2xl bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent tracking-tight">
-                {appName}
-              </span>
-              <span className="text-sm text-gray-400 font-medium">
-                AI Model Comparison Platform
-              </span>
-            </div>
+            <Logo size="md" showText={true} animated={true} />
           </div>
 
           {/* Quick Actions */}

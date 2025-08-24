@@ -18,6 +18,7 @@ import {
 import ThemeToggle from "@/components/ThemeToggle";
 import Footer from "@/components/app/Footer";
 import { AuroraHero } from "@/components/ui/futurastic-hero-section";
+import Logo from "@/components/ui/Logo";
 
 import { LucideIcon } from "lucide-react";
 
@@ -170,23 +171,13 @@ export default function LandingPage() {
 
       {/* Navigation */}
       <motion.nav
-        className="relative z-20 flex justify-between items-center px-6 py-6"
+        className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 py-6 bg-gray-950/20 backdrop-blur-sm border-b border-white/10"
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
-          <motion.div
-            className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 via-purple-600 to-indigo-600 flex items-center justify-center shadow-lg"
-            whileHover={{ rotate: 360, scale: 1.1 }}
-            transition={{ duration: 0.3 }}
-            style={{ boxShadow: "0 8px 32px rgba(59, 130, 246, 0.3)" }}
-          >
-            <MessageSquare className="w-6 h-6 text-white" />
-          </motion.div>
-          <span className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            ModelArena
-          </span>
+        <Link href="/" className="hover:opacity-80 transition-opacity">
+          <Logo size="md" showText={true} animated={true} />
         </Link>
         <div className="flex items-center space-x-6">
           <motion.div
@@ -213,7 +204,7 @@ export default function LandingPage() {
         </div>
       </motion.nav>
 
-      <div className="relative z-10">
+      <div className="relative z-10 pt-20">
         {/* Aurora Hero Section */}
         <AuroraHero />
 

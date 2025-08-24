@@ -90,8 +90,7 @@ export function AiInput({
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [attachedFile, setAttachedFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [barVisible, setBarVisible] = useState(true);
-  const lastScrollY = useRef(0);
+  const [barVisible] = useState(true);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
   const handelClose = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -156,24 +155,7 @@ export function AiInput({
     };
   }, [imagePreview]);
 
-  // Hide bar on scroll down, show on scroll up
-  useEffect(() => {
-    const onScroll = () => {
-      const y = window.scrollY || 0;
-      const delta = y - lastScrollY.current;
-      const threshold = 6;
-      if (y < 8) {
-        setBarVisible(true);
-      } else if (delta > threshold) {
-        setBarVisible(false);
-      } else if (delta < -threshold) {
-        setBarVisible(true);
-      }
-      lastScrollY.current = y;
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  // Keep the input bar always visible (scroll hiding disabled)
   return (
     <motion.div
       className="w-full py-4"

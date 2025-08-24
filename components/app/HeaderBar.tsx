@@ -4,6 +4,7 @@ import GithubStar from "@/components/app/GithubStar";
 import ThemeToggle from "@/components/ThemeToggle";
 import CustomModels from "@/components/modals/CustomModels";
 import Settings from "@/components/app/Settings";
+import Logo from "@/components/ui/Logo";
 import { Layers } from "lucide-react";
 import { Menu as MenuIcon } from "lucide-react";
 
@@ -33,7 +34,8 @@ export default function HeaderBar({
   return (
     <header
       className={[
-        "flex items-center justify-between w-full mb-4 px-1 py-2",
+        "fixed top-0 left-0 right-0 z-50",
+        "flex items-center justify-between w-full px-1 py-2",
         "bg-gradient-to-r from-white/[0.02] via-white/[0.05] to-white/[0.02]",
         "border-b border-white/[0.08] backdrop-blur-sm",
         "transition-all duration-300 ease-out",
@@ -79,11 +81,9 @@ export default function HeaderBar({
         </a>
       </div>
 
-      {/* Center Section: Title */}
-      <div className="flex-1 text-center hidden sm:block px-4">
-        <h1 className="text-xl md:text-2xl lg:text-3xl font-extrabold tracking-tight bg-gradient-to-r from-white via-white/95 to-white/80 bg-clip-text text-transparent drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)] select-none pointer-events-none">
-          {title}
-        </h1>
+      {/* Center Section: Logo */}
+      <div className="flex-1 flex justify-center hidden sm:block px-4">
+        <Logo size="sm" showText={true} animated={false} />
       </div>
 
       {/* Right Section: Action Buttons */}

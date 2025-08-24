@@ -181,6 +181,17 @@ export default function ChatPage() {
 
   return (
     <div className={`min-h-screen w-full ${backgroundClass} relative text-white`}>
+      {/* Fixed Header */}
+      <HeaderBar
+        onOpenMenu={() => setMobileSidebarOpen(true)}
+        title="ModelArena"
+        authorName="Xenonesis"
+        authorImageSrc="https://github.com/Xenonesis.png"
+        authorLink="https://github.com/Xenonesis"
+        githubOwner="Xenonesis"
+        githubRepo="ModelArena"
+        onOpenModelsModal={() => setModelsModalOpen(true)}
+      />
 
       {showSplash && (
         <div className="fixed inset-0 z-[9999]">
@@ -189,7 +200,7 @@ export default function ChatPage() {
       )}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-95" />
 
-      <div className="relative z-10 px-3 lg:px-4 py-4 lg:py-6">
+      <div className="relative z-10 px-3 lg:px-4 py-4 lg:py-6 pt-20">
         <div className="flex gap-3 lg:gap-4">
           {/* Sidebar */}
           <ThreadSidebar
@@ -234,20 +245,7 @@ export default function ChatPage() {
           />
 
           {/* Main content */}
-          <div className="flex-1 min-w-0 flex flex-col h-[calc(100vh-2rem)] lg:h-[calc(100vh-3rem)] overflow-hidden">
-            {/* Top bar */}
-            <HeaderBar
-              onOpenMenu={() => setMobileSidebarOpen(true)}
-              title="ModelArena"
-              authorName="Xenonesis"
-              authorImageSrc="https://github.com/Xenonesis.png"
-              authorLink="https://github.com/Xenonesis"
-              githubOwner="Xenonesis"
-              githubRepo="ModelArena"
-              onOpenModelsModal={() => setModelsModalOpen(true)}
-              className="-mr-3 sm:mr-0"
-            />
-
+          <div className="flex-1 min-w-0 flex flex-col h-[calc(100vh-5rem)] lg:h-[calc(100vh-5rem)] overflow-hidden">
             {/* Selected models row + actions */}
             <SelectedModelsBar selectedModels={selectedModels} onToggle={toggle} />
 

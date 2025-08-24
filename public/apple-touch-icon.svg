@@ -1,0 +1,47 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradientApple" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:1" />
+      <stop offset="30%" style="stop-color:#6366F1;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4F46E5;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glowApple" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="innerShadow">
+      <feOffset dx="0" dy="2"/>
+      <feGaussianBlur stdDeviation="2"/>
+      <feComposite operator="over"/>
+    </filter>
+  </defs>
+  
+  <!-- Background with rounded corners for iOS -->
+  <rect width="180" height="180" rx="40" fill="url(#gradientApple)" filter="url(#glowApple)"/>
+  
+  <!-- Inner gradient overlay for depth -->
+  <rect width="180" height="180" rx="40" fill="url(#gradientApple)" opacity="0.8"/>
+  
+  <!-- Chat bubble icon - larger and more detailed -->
+  <path d="M45 67.5C45 55.0736 55.0736 45 67.5 45H112.5C124.926 45 135 55.0736 135 67.5V101.25C135 113.676 124.926 123.75 112.5 123.75H90L67.5 146.25V123.75H67.5C55.0736 123.75 45 113.676 45 101.25V67.5Z" 
+        fill="white" 
+        opacity="0.95"
+        filter="url(#innerShadow)"/>
+  
+  <!-- Inner highlight for 3D effect -->
+  <ellipse cx="90" cy="55" rx="30" ry="8" fill="white" opacity="0.4"/>
+  
+  <!-- Sparkle effects -->
+  <circle cx="145" cy="35" r="4" fill="white" opacity="0.9"/>
+  <circle cx="35" cy="145" r="3" fill="white" opacity="0.7"/>
+  <circle cx="155" cy="155" r="2" fill="white" opacity="0.6"/>
+  
+  <!-- Additional shine effect -->
+  <path d="M45 45C45 25 60 40 90 40C120 40 135 25 135 45V90C135 110 90 55 90 55C90 55 45 110 45 90V45Z" 
+        fill="white" 
+        opacity="0.1"/>
+</svg>

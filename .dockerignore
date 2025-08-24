@@ -1,0 +1,13 @@
+**/node_modules
+**/.next
+**/dist
+**/build
+Dockerfile
+.dockerignore
+.git
+.gitignore
+README.md
+*.md
+**/*.log
+**/.DS_Store
+**/Thumbs.db

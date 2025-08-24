@@ -1,0 +1,44 @@
+{
+  "name": "modelarena",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "unimported": "unimported",
+    "docker:build": "docker build -t ai_fiesta .",
+    "docker:run": "docker run -p 3000:3000 ai_fiesta",
+    "docker:dev": "docker-compose up ai_fiesta_dev",
+    "docker:prod": "docker-compose up ai_fiesta"
+  },
+  "dependencies": {
+    "@vercel/analytics": "^1.5.0",
+    "@vercel/speed-insights": "^1.2.0",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.12",
+    "lucide-react": "^0.539.0",
+    "mammoth": "^1.10.0",
+    "next": "15.4.6",
+    "pdf-parse": "^1.1.1",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "react-toastify": "^11.0.5",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.4.6",
+    "tailwindcss": "^4",
+    "tw-animate-css": "^1.3.7",
+    "typescript": "^5",
+    "unimported": "^1.31.0"
+  }
+}

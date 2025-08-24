@@ -4,15 +4,18 @@
 
 ### The ultimate open-source playground for comparing multiple AI models side-by-side
 
-[![GitHub Stars](https://img.shields.io/github/stars/Xenonesis/ModelArena)](https://github.com/Xenonesis/ModelArena/stargazers)
-[![GitHub Issues](https://img.shields.io/github/issues/Xenonesis/ModelArena)](https://github.com/Xenonesis/ModelArena/issues)
-[![License](https://img.shields.io/github/license/Xenonesis/ModelArena)](https://github.com/Xenonesis/ModelArena/blob/main/LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/Xenonesis/ModelArena/pulls)
-[![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://hub.docker.com)
-[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org)
-[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![GitHub Stars](https://img.shields.io/github/stars/Xenonesis/ModelArena?style=for-the-badge&logo=github)](https://github.com/Xenonesis/ModelArena/stargazers)
+[![GitHub Issues](https://img.shields.io/github/issues/Xenonesis/ModelArena?style=for-the-badge&logo=github)](https://github.com/Xenonesis/ModelArena/issues)
+[![License](https://img.shields.io/github/license/Xenonesis/ModelArena?style=for-the-badge&logo=open-source-initiative)](https://github.com/Xenonesis/ModelArena/blob/main/LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge&logo=github)](https://github.com/Xenonesis/ModelArena/pulls)
+[![Docker](https://img.shields.io/badge/docker-ready-blue.svg?style=for-the-badge&logo=docker)](https://hub.docker.com)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
+[![shadcn/ui](https://img.shields.io/badge/shadcn%2Fui-000000?style=for-the-badge&logo=shadcnui&logoColor=white)](https://ui.shadcn.com)
+[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
 
-[🌐 Live Demo](https://modelarena.vercel.app) • [📖 Documentation](https://github.com/Xenonesis/ModelArena/wiki) • [🚀 Quick Start](#-quick-start)
+[🌐 Live Demo](https://modelarena.vercel.app) • [📖 Documentation](https://github.com/Xenonesis/ModelArena/wiki) • [🚀 Quick Start](#-quick-start) • [🎮 Try Now](#-try-it-live)
 
 </div>
 
@@ -22,6 +25,7 @@
 
 - [🎯 What is ModelArena?](#-what-is-modelarena)
 - [✨ Key Features](#-key-features)
+- [🎮 Try It Live](#-try-it-live)
 - [🚀 Quick Start](#-quick-start)
 - [📸 Screenshots](#-screenshots)
 - [🛠️ Tech Stack](#️-tech-stack)
@@ -29,6 +33,8 @@
 - [🌐 Supported Providers](#-supported-providers)
 - [🔧 Environment Variables](#-environment-variables)
 - [🐳 Docker Support](#-docker-support)
+- [📊 API Examples](#-api-examples)
+- [🎨 Theme System](#-theme-system)
 - [🗺️ Roadmap](#️-roadmap)
 - [🤝 Contributing](#-contributing)
 - [📄 License](#-license)
@@ -37,34 +43,41 @@
 
 ---
 
-</div>
-
-
-
 <div align="center">
-  <video controls poster="./public/osfiesta.png" width="800">
+  <video controls poster="./public/osfiesta.png" width="800" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);">
     <source src="./public/OSFiesta.mp4" type="video/mp4" />
     <a href="./public/OSFiesta.mp4">
-      <img src="./public/osfiesta.png" alt="ModelArena preview" />
+      <img src="./public/osfiesta.png" alt="ModelArena preview" style="border-radius: 12px;" />
     </a>
     Your browser does not support the video tag.
   </video>
+  <p><em>🚀 Experience the power of multi-model AI comparison</em></p>
 </div>
 
 ## 🎯 What is ModelArena?
 
+> **🎨 Built for developers, by developers** - The most advanced AI model comparison platform
+
 ModelArena is a cutting-edge, open-source AI playground that allows you to experiment with and compare multiple AI models side-by-side. Unlike traditional chat interfaces, ModelArena enables you to run up to 5 different AI models simultaneously, compare their outputs, and find the best response for your specific needs.
+
+### 🏆 **Why Choose ModelArena?**
+
+- **⚡ Real-time Comparison**: See responses as they stream in
+- **📊 Performance Analytics**: Track response times and quality metrics
+- **🎨 Beautiful UI**: Modern, responsive design with multiple themes
+- **🔧 Developer-Friendly**: Easy to extend and customize
+- **🌍 Community-Driven**: Open-source and actively maintained
 
 Built with Next.js 15, TypeScript, and Tailwind CSS, ModelArena provides a modern, responsive interface with real-time streaming capabilities and a clean, intuitive UI.
 
 ## ✨ Key Features
 
 ### 🎯 Multi-Model Comparison
-- **Side-by-side comparison** of up to 5 AI models simultaneously
-- **Real-time response comparison** with color-coded outputs
-- **Performance metrics** and response time tracking
-- **A/B testing interface** for prompt optimization
-- **Export comparison results** in multiple formats
+- **📊 Side-by-side comparison** of up to 5 AI models simultaneously
+- **⚡ Real-time response comparison** with color-coded outputs
+- **📈 Performance metrics** and response time tracking
+- **🅰️🅱️ A/B testing interface** for prompt optimization
+- **📤 Export comparison results** in multiple formats
 
 ### 🤖 Extensive Model Support
 - **🔹 Google Gemini**: Gemini 2.5 Pro, Gemini 2.5 Flash, Gemini 1.5 Pro
@@ -97,17 +110,60 @@ Built with Next.js 15, TypeScript, and Tailwind CSS, ModelArena provides a moder
 - **🔧 Extensible Architecture**: Easy to add new AI providers
 - **🧪 Testing Framework**: Comprehensive test suites included
 
+## 🎮 Try It Live
+
+### 🌐 **Online Demo**
+Experience ModelArena without any setup:
+
+<div align="center">
+  <a href="https://modelarena.vercel.app" target="_blank">
+    <img src="https://img.shields.io/badge/🚀_Launch_Demo-000000?style=for-the-badge&logo=vercel&logoColor=white" alt="Launch Demo" />
+  </a>
+</div>
+
+**What you can try:**
+- Compare different AI models side-by-side
+- Test various prompts and see real-time responses
+- Experiment with different themes and settings
+- Upload images for analysis
+- Create and manage multiple chat threads
+
+### 🖥️ **Local Installation**
+Get the full experience on your machine:
+
+```bash
+# Quick setup in 3 steps
+git clone https://github.com/Xenonesis/ModelArena.git
+cd ModelArena
+npm install && npm run dev
+```
+
 ## 📸 Screenshots
 
 <div align="center">
-  <img src="./public/screenshots/dashboard.png" alt="ModelArena Dashboard" width="800"/>
-  <p><em>Main Dashboard - Compare multiple AI models side by side</em></p>
+  <details>
+    <summary><strong>🏠 Main Dashboard</strong> - Click to expand</summary>
+    <img src="./public/screenshots/dashboard.png" alt="ModelArena Dashboard" width="800" style="border-radius: 8px; margin: 10px 0;"/>
+    <p><em>Modern dashboard with side-by-side model comparison</em></p>
+  </details>
 
-  <img src="./public/screenshots/chat-interface.png" alt="Chat Interface" width="800"/>
-  <p><em>Real-time chat interface with streaming responses</em></p>
+  <details>
+    <summary><strong>💬 Chat Interface</strong> - Click to expand</summary>
+    <img src="./public/screenshots/chat-interface.png" alt="Chat Interface" width="800" style="border-radius: 8px; margin: 10px 0;"/>
+    <p><em>Real-time streaming chat with multiple AI models</em></p>
+  </details>
 
-  <img src="./public/screenshots/model-selection.png" alt="Model Selection" width="800"/>
-  <p><em>Choose from 20+ AI models with easy selection interface</em></p>
+  <details>
+    <summary><strong>⚙️ Model Selection</strong> - Click to expand</summary>
+    <img src="./public/screenshots/model-selection.png" alt="Model Selection" width="800" style="border-radius: 8px; margin: 10px 0;"/>
+    <p><em>Choose from 20+ AI models with intuitive interface</em></p>
+  </details>
+
+  <details>
+    <summary><strong>🎨 Theme Customization</strong> - Click to expand</summary>
+    <img src="./public/screenshots/theme-customization.png" alt="Theme Customization" width="800" style="border-radius: 8px; margin: 10px 0;"/>
+    <p><em>Personalize your experience with custom themes</em></p>
+  </details>
 </div>
 
 ## 🚀 Quick Start
@@ -172,6 +228,94 @@ docker run -p 3000:3000 \
 1. Add environment variables in Vercel dashboard
 2. Your ModelArena instance is live! 🚀
 
+## 📊 API Examples
+
+### 🔧 **Basic Chat Request**
+
+```typescript
+// Send a message to a single model
+const response = await fetch('/api/openrouter', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    model: 'deepseek/deepseek-r1',
+    messages: [
+      {
+        role: 'user',
+        content: 'Hello, how are you?'
+      }
+    ]
+  })
+});
+
+const data = await response.json();
+console.log(data.choices[0].message.content);
+```
+
+### 🎯 **Multi-Model Comparison**
+
+```typescript
+// Compare multiple models simultaneously
+const models = ['deepseek/deepseek-r1', 'meta-llama/llama-3.3-70b-instruct', 'google/gemini-2.5-flash'];
+const prompt = 'Explain quantum computing in simple terms';
+
+const comparisons = await Promise.all(
+  models.map(async (model) => {
+    const response = await fetch('/api/openrouter', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    return { model, response: await response.json() };
+  })
+);
+
+console.log('Model Comparisons:', comparisons);
+```
+
+### 🌐 **Streaming Response**
+
+```typescript
+// Real-time streaming for instant responses
+const response = await fetch('/api/openrouter/stream', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    model: 'deepseek/deepseek-r1',
+    messages: [{ role: 'user', content: 'Tell me a story' }]
+  })
+});
+
+const reader = response.body.getReader();
+while (true) {
+  const { done, value } = await reader.read();
+  if (done) break;
+  console.log(new TextDecoder().decode(value));
+}
+```
+
+### 📸 **Image Analysis**
+
+```typescript
+// Upload and analyze images
+const formData = new FormData();
+formData.append('image', imageFile);
+formData.append('prompt', 'Describe this image in detail');
+
+const response = await fetch('/api/gemini', {
+  method: 'POST',
+  body: formData
+});
+
+const analysis = await response.json();
+console.log(analysis.description);
+```
+
 ## 🛠️ Tech Stack
 
 <div align="center">
@@ -211,48 +355,98 @@ docker run -p 3000:3000 \
 
 </div>
 
+## 🎨 Theme System
+
+ModelArena features a comprehensive theming system that allows you to customize every aspect of the interface:
+
+### 🎨 **Built-in Themes**
+- **🌙 Dark Theme** - Easy on the eyes for long sessions
+- **☀️ Light Theme** - Clean and professional appearance
+- **🌈 Custom Accents** - Choose from 10+ color schemes
+
+### 🎯 **Customization Options**
+- **Background Images** - Upload custom backgrounds
+- **Font Selection** - Choose from Google Fonts
+- **Layout Preferences** - Adjust spacing and sizing
+- **Animation Settings** - Control transition speeds
+
+```typescript
+// Example theme configuration
+const customTheme = {
+  background: '#1a1a2e',
+  foreground: '#e5e5e5',
+  accent: '#00d4ff',
+  fontFamily: 'Inter, sans-serif',
+  borderRadius: '12px',
+  animations: true
+};
+```
+
 ## 🏗️ Project Structure
 
 ```
-app/
-├── api/                 # API routes for different providers
-│   ├── gemini/          # Gemini provider integration
-│   └── openrouter/      # OpenRouter provider integration
-├── chat/                # Chat interface
-└── ...                  # Other Next.js app routes
-
-components/
-├── app/                 # Main application components
-├── chat/                # Chat-specific components
-├── ui/                  # Reusable UI components (shadcn/ui)
-└── ...                  # Other component categories
-
-lib/
-├── models.ts            # Model catalog and configuration
-├── themeContext.ts      # Theme management
-└── ...                  # Utility functions and helpers
-
-public/                  # Static assets
+📁 ModelArena/
+├── 📁 app/                    # Next.js App Router
+│   ├── 📁 api/               # API routes for different providers
+│   │   ├── 📁 gemini/        # Gemini provider integration
+│   │   ├── 📁 openrouter/    # OpenRouter provider integration
+│   │   └── 📁 github/        # GitHub API integration
+│   ├── 📁 chat/              # Chat interface pages
+│   ├── 📁 globals.css        # Global styles
+│   └── 📁 layout.tsx         # Root layout component
+├── 📁 components/            # React components
+│   ├── 📁 app/               # Main application components
+│   │   ├── 📁 LandingPage.tsx # Landing page component
+│   │   ├── 📁 HeaderBar.tsx   # Header navigation
+│   │   └── 📁 Settings.tsx    # Settings panel
+│   ├── 📁 chat/              # Chat-specific components
+│   │   ├── 📁 AIChatBox.tsx  # Chat interface
+│   │   ├── 📁 ChatGrid.tsx   # Multi-model grid
+│   │   └── 📁 ThreadSidebar.tsx # Thread management
+│   ├── 📁 ui/                # Reusable UI components (shadcn/ui)
+│   │   ├── 📁 Button.tsx     # Custom button component
+│   │   ├── 📁 Input.tsx      # Input field component
+│   │   └── 📁 Loading.tsx    # Loading spinner
+│   └── 📁 modals/            # Modal components
+├── 📁 lib/                   # Utility functions and configurations
+│   ├── 📁 models.ts          # Model catalog and configuration
+│   ├── 📁 themeContext.tsx   # Theme management
+│   ├── 📁 utils.ts           # General utilities
+│   └── 📁 types.ts           # TypeScript type definitions
+├── 📁 public/                # Static assets
+│   ├── 📁 screenshots/       # App screenshots
+│   └── 📁 icons/            # Icon assets
+├── 📁 theme_system/          # Theme configuration files
+├── 📄 package.json           # Dependencies and scripts
+├── 📄 tailwind.config.js     # Tailwind CSS configuration
+├── 📄 next.config.ts         # Next.js configuration
+├── 📄 docker-compose.yml     # Docker Compose configuration
+└── 📄 README.md              # Project documentation
 ```
 
 ## 🌐 Supported Providers
 
-| Provider | Models | Features |
-|---------|--------|----------|
-| **Google Gemini** | Gemini 2.5 Pro, Flash | Image input, fast responses |
-| **OpenRouter** | 20+ models including: | Free tiers, wide selection |
-| | - DeepSeek R1 | Reasoning capabilities |
-| | - Llama 3.3 70B | High-quality responses |
-| | - Qwen 2.5 72B | Multilingual support |
-| | - Mistral Small | Efficient performance |
-| | - And many more... | |
+| Provider | Models | Features | Status |
+|---------|--------|----------|---------|
+| **Google Gemini** | Gemini 2.5 Pro, Flash | Image input, fast responses | ✅ Active |
+| **OpenRouter** | 20+ models including: | Free tiers, wide selection | ✅ Active |
+| | - DeepSeek R1 | Reasoning capabilities | 🆓 Free |
+| | - Llama 3.3 70B | High-quality responses | 🆓 Free |
+| | - Qwen 2.5 72B | Multilingual support | 🆓 Free |
+| | - Mistral Small | Efficient performance | 🆓 Free |
+| | - And many more... | | |
+| **Anthropic Claude** | Claude 3.5 Sonnet, Opus | Advanced reasoning | 💰 Paid |
+| **OpenAI GPT** | GPT-4, GPT-3.5 Turbo | Industry standard | 💰 Paid |
 
 ## 🔧 Environment Variables
 
-| Variable | Description | Required |
-|---------|-------------|----------|
-| `OPENROUTER_API_KEY` | API key from [OpenRouter](https://openrouter.ai) | For OpenRouter models |
-| `GOOGLE_GENERATIVE_AI_API_KEY` | API key from [Google AI Studio](https://aistudio.google.com) | For Gemini models |
+| Variable | Description | Required | Default |
+|---------|-------------|----------|---------|
+| `OPENROUTER_API_KEY` | API key from [OpenRouter](https://openrouter.ai) | For OpenRouter models | - |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | API key from [Google AI Studio](https://aistudio.google.com) | For Gemini models | - |
+| `ANTHROPIC_API_KEY` | API key from [Anthropic](https://console.anthropic.com) | For Claude models | - |
+| `OPENAI_API_KEY` | API key from [OpenAI](https://platform.openai.com) | For GPT models | - |
+| `NEXT_PUBLIC_APP_URL` | Base URL for the application | No | http://localhost:3000 |
 
 You can also provide API keys at runtime through the UI's Settings panel.
 

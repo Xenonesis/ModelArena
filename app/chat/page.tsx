@@ -200,8 +200,8 @@ export default function ChatPage() {
       )}
       <div className="absolute inset-0 z-0 pointer-events-none opacity-95" />
 
-      <div className="relative z-10 px-3 lg:px-4 py-4 lg:py-6 pt-20">
-        <div className="flex gap-3 lg:gap-4">
+      <div className="relative z-10 px-3 lg:px-4 pt-20 pb-32">
+        <div className="flex gap-3 lg:gap-4 min-h-[calc(100vh-13rem)]">
           {/* Sidebar */}
           <ThreadSidebar
             sidebarOpen={sidebarOpen}
@@ -245,7 +245,7 @@ export default function ChatPage() {
           />
 
           {/* Main content */}
-          <div className="flex-1 min-w-0 flex flex-col h-[calc(100vh-5rem)] lg:h-[calc(100vh-5rem)] overflow-hidden">
+          <div className="flex-1 min-w-0 flex flex-col min-h-full overflow-visible">
             {/* Selected models row + actions */}
             <SelectedModelsBar selectedModels={selectedModels} onToggle={toggle} />
 

@@ -48,7 +48,7 @@ export default function ThreadSidebar({
     <>
       {/* Desktop sidebar */}
       <aside
-        className={`relative hidden lg:flex shrink-0 h-[calc(100vh-2rem)] lg:h-[calc(100vh-3rem)] rounded-lg border border-white/10 bg-white/5 p-3 flex-col transition-[width] duration-300 ${
+        className={`relative hidden lg:flex shrink-0 h-[calc(100vh-13rem)] rounded-lg border border-white/10 bg-white/5 p-3 flex-col transition-[width] duration-300 ${
           sidebarOpen ? "w-64" : "w-14"
         }`}
       >
@@ -186,12 +186,12 @@ export default function ThreadSidebar({
 
       {/* Mobile sidebar drawer */}
       {mobileSidebarOpen && (
-        <div className="lg:hidden fixed inset-0 z-40">
+        <div className="lg:hidden fixed inset-0 z-40 pt-20">
           <div
             className="absolute inset-0 bg-black/60"
             onClick={onCloseMobile}
           />
-          <div className="absolute left-0 top-0 h-full w-72 bg-zinc-900/90 border-r border-white/10 p-3">
+          <div className="absolute left-0 top-0 h-full w-72 bg-zinc-900/90 border-r border-white/10 p-3 pt-6">
             <div className="flex items-center justify-between mb-2">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full accent-dot accent-beacon accent-dot-pulse" />
@@ -234,7 +234,7 @@ export default function ThreadSidebar({
             <div className="text-xs uppercase tracking-wide opacity-60 mb-2">
               Chats
             </div>
-            <div className="h-[70vh] overflow-y-auto space-y-1 pr-1">
+            <div className="h-[calc(100vh-16rem)] overflow-y-auto space-y-1 pr-1">
               {threads.length === 0 && (
                 <div className="text-xs opacity-60">No chats yet</div>
               )}

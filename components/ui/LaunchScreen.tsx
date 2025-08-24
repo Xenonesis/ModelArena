@@ -1,10 +1,11 @@
 "use client";
 
+import Logo from "@/components/ui/Logo";
+
 interface LaunchScreenProps {
   backgroundClass: string;
   title?: string;
   subtitle?: string;
-  logoSrc?: string;
   dismissed?: boolean;
 }
 
@@ -12,7 +13,6 @@ export default function LaunchScreen({
   backgroundClass,
   title = "ModelArena",
   subtitle = "Warming things up…",
-  logoSrc = "/brand.png",
   dismissed = false,
 }: LaunchScreenProps) {
 
@@ -28,47 +28,41 @@ export default function LaunchScreen({
               <div
                 role="status"
                 aria-live="polite"
-                className={`w-full max-w-sm rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md shadow-2xl p-7 sm:p-8 text-center relative overflow-hidden transition-opacity duration-300 ease-out ${dismissed ? "opacity-0" : "opacity-100"}`}
+                className={`w-full max-w-sm rounded-2xl border border-white/20 bg-gray-950/20 backdrop-blur-xl shadow-2xl p-7 sm:p-8 text-center relative overflow-hidden transition-all duration-300 ease-out ${dismissed ? "opacity-0 scale-95" : "opacity-100 scale-100"}`}
+                style={{
+                  boxShadow: "0 0 40px rgba(19, 255, 170, 0.15), 0 0 80px rgba(30, 103, 198, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)"
+                }}
               >
-                {/* Ambient glow */}
-                <div className={`pointer-events-none absolute -inset-12 bg-gradient-radial from-white/10 via-transparent to-transparent blur-3xl transition-opacity duration-300 ease-out ${dismissed ? "opacity-0" : "opacity-100"}`} />
+                {/* Aurora ambient glow */}
+                <div className={`pointer-events-none absolute -inset-12 bg-gradient-radial from-[#13FFAA]/10 via-[#1E67C6]/5 to-transparent blur-3xl transition-opacity duration-300 ease-out ${dismissed ? "opacity-0" : "opacity-100"}`} />
 
                 {/* Card content */}
                 <div className="relative">
-                  {/* Logo with soft ring */}
-                  {logoSrc && (
-                    <div
-                      className="mx-auto inline-flex items-center justify-center rounded-2xl ring-1 ring-white/15 shadow-md p-2 bg-white/5"
-                      style={{ boxShadow: "0 0 36px 2px var(--accent-primary)" }}
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={logoSrc} alt="Brand" className="h-16 w-16 rounded-xl" />
-                    </div>
-                  )}
+                {/* Logo with enhanced styling */}
+                <div className="mx-auto flex justify-center">
+                  <Logo size="lg" showText={false} animated={true} />
+                </div>
 
                   {/* Title & subtitle */}
                   <h2 className="mt-3 text-base font-semibold tracking-wide text-white/95">{title}</h2>
                   <p className="mt-1 text-sm text-white/70">{subtitle}</p>
 
-                  {/* Subtle accent progress with sheen */}
-                  <div className="mt-6 relative h-1.5 w-full overflow-hidden rounded-full bg-white/10">
-                    {/* Base accent line */}
+                  {/* Enhanced progress bar with aurora colors */}
+                  <div className="mt-6 relative h-2 w-full overflow-hidden rounded-full bg-white/10">
+                    {/* Aurora gradient progress */}
                     <div
-                      className="absolute inset-0"
+                      className="absolute inset-0 bg-gradient-to-r from-[#13FFAA] via-[#1E67C6] to-[#CE84CF] opacity-60"
                       style={{
-                        background:
-                          "linear-gradient(90deg, var(--accent-primary), var(--accent-secondary))",
-                        opacity: 0.55,
-                        boxShadow: "0 0 10px 0 var(--accent-primary)",
+                        boxShadow: "0 0 20px rgba(19, 255, 170, 0.4), 0 0 40px rgba(30, 103, 198, 0.3), 0 0 60px rgba(206, 132, 207, 0.2)",
                       }}
                     />
-                    {/* Sheen sweep */}
+                    {/* Animated sheen effect */}
                     <div
                       className="absolute top-0 left-0 h-full w-1/3 motion-safe:animate-[sheen_1.4s_ease-in-out_infinite]"
                       style={{
                         background:
                           "linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent)",
-                        filter: "blur(2px)",
+                        filter: "blur(1px)",
                       }}
                     />
                   </div>

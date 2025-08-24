@@ -18,6 +18,7 @@ import {
   Image as ImageIcon
 } from "lucide-react";
 import ThemeToggle from "@/components/ThemeToggle";
+import { AuroraHero } from "@/components/ui/futurastic-hero-section";
 
 import { LucideIcon } from "lucide-react";
 
@@ -306,122 +307,9 @@ export default function LandingPage() {
         </div>
       </motion.nav>
 
-      <div className="relative z-10 px-6">
-        {/* Hero Section */}
-        <div className="max-w-6xl mx-auto pt-12 pb-20 text-center">
-          <motion.div
-            className="mb-6"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <motion.span
-              className="inline-flex items-center px-3 py-1 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-300 text-sm font-medium"
-              whileHover={{ scale: 1.05, boxShadow: "0 0 20px rgba(59, 130, 246, 0.3)" }}
-              transition={{ duration: 0.2 }}
-            >
-              <Zap className="w-3 h-3 mr-1" />
-              Multi-Model AI Playground
-            </motion.span>
-          </motion.div>
-
-          <div className="mb-6">
-            <AnimatedText
-              text="Compare AI Models"
-              className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-white via-white to-gray-300 bg-clip-text text-transparent block"
-              delay={0.4}
-            />
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-            >
-              <span className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-                Side by Side
-              </span>
-            </motion.div>
-          </div>
-
-          <motion.p
-            className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto leading-relaxed"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.0 }}
-          >
-            The ultimate open-source playground to experiment with multiple AI models simultaneously.
-            Compare outputs, find the best responses, and enhance your AI workflow.
-          </motion.p>
-
-          <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-          >
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Link
-                href="/chat"
-                className="group inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl"
-              >
-                <motion.span
-                  initial={{ x: 0 }}
-                  whileHover={{ x: -5 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  Start Chatting
-                </motion.span>
-                <motion.div
-                  className="ml-2"
-                  initial={{ x: 0 }}
-                  whileHover={{ x: 5 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <ArrowRight className="w-5 h-5" />
-                </motion.div>
-              </Link>
-            </motion.div>
-
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <a
-                href="https://github.com/Xenonesis/ModelArena.git"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center px-8 py-4 bg-white/10 hover:bg-white/20 backdrop-blur-sm border border-white/20 text-white font-semibold rounded-xl transition-all duration-300"
-              >
-                <Star className="mr-2 w-5 h-5" />
-                View on GitHub
-              </a>
-            </motion.div>
-          </motion.div>
-
-          {/* Supported Models */}
-          <motion.div
-            className="mb-20"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.4 }}
-          >
-            <motion.h3
-              className="text-lg font-semibold text-gray-300 mb-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 1.5 }}
-            >
-              Supported AI Models
-            </motion.h3>
-            <div className="flex flex-wrap justify-center gap-3">
-              {supportedModels.map((model, index) => (
-                <ModelBadge key={index} name={model.name} color={model.color} index={index} />
-              ))}
-            </div>
-          </motion.div>
-        </div>
+      <div className="relative z-10">
+        {/* Aurora Hero Section */}
+        <AuroraHero />
 
         {/* Features Grid */}
         <div className="max-w-6xl mx-auto pb-20">

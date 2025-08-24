@@ -243,7 +243,7 @@ export default function ChatPage() {
               authorImageSrc="https://github.com/Xenonesis.png"
               authorLink="https://github.com/Xenonesis"
               githubOwner="Xenonesis"
-              githubRepo="Open-Fiesta-Clone"
+              githubRepo="ModelArena"
               onOpenModelsModal={() => setModelsModalOpen(true)}
               className="-mr-3 sm:mr-0"
             />

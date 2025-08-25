@@ -49,6 +49,18 @@ function extractText(res: unknown): string {
   return 'No response';
 }
 
+function extractTiming(res: unknown): { responseTime?: number; startTime?: number; endTime?: number } {
+  if (res && typeof res === 'object') {
+    const r = res as Record<string, unknown>;
+    return {
+      responseTime: typeof r.responseTime === 'number' ? r.responseTime : undefined,
+      startTime: typeof r.startTime === 'number' ? r.startTime : undefined,
+      endTime: typeof r.endTime === 'number' ? r.endTime : undefined,
+    };
+  }
+  return {};
+}
+
 export function createChatActions({ selectedModels, keys, threads, activeThread, setThreads, setActiveId, setLoadingIds, setLoadingIdsInit, activeProject }: ChatDeps) {
   function ensureThread(): ChatThread {
     if (activeThread) return activeThread;
@@ -110,15 +122,18 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
         if (m.provider === 'gemini') {
           // create placeholder for typing animation
           const placeholderTs = Date.now();
-          const placeholder: ChatMessage = { role: 'assistant', content: '', modelId: m.id, ts: placeholderTs };
+          const startTime = Date.now();
+          const placeholder: ChatMessage = { role: 'assistant', content: '', modelId: m.id, ts: placeholderTs, startTime };
           setThreads(prev => prev.map(t => t.id === thread.id ? { ...t, messages: [...(t.messages ?? nextHistory), placeholder] } : t));
 
           const res = await callGemini({ apiKey: keys.gemini || undefined, model: m.model, messages: prepareMessages(nextHistory), imageDataUrl, signal: controller.signal });
           const full = String(extractText(res) || '').trim();
+          const timing = extractTiming(res);
+          
           if (!full) {
             setThreads(prev => prev.map(t => {
               if (t.id !== thread.id) return t;
-              const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: 'No response' } : msg);
+              const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: 'No response', ...timing } : msg);
               return { ...t, messages: msgs };
             }));
           } else {
@@ -130,7 +145,7 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
               const chunk = full.slice(0, i);
               setThreads(prev => prev.map(t => {
                 if (t.id !== thread.id) return t;
-                const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk } : msg);
+                const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk, ...timing } : msg);
                 return { ...t, messages: msgs };
               }));
               if (i >= full.length) window.clearInterval(timer);
@@ -139,16 +154,18 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
         } else if (m.provider === 'puter') {
           // Puter.js models - handle directly in browser
           const placeholderTs = Date.now();
-          const placeholder: ChatMessage = { role: 'assistant', content: '', modelId: m.id, ts: placeholderTs };
+          const startTime = Date.now();
+          const placeholder: ChatMessage = { role: 'assistant', content: '', modelId: m.id, ts: placeholderTs, startTime };
           setThreads(prev => prev.map(t => t.id === thread.id ? { ...t, messages: [...(t.messages ?? nextHistory), placeholder] } : t));
 
           const res = await callPuter({ model: m.model, messages: prepareMessages(nextHistory), signal: controller.signal });
           const full = String(extractText(res) || '').trim();
+          const timing = extractTiming(res);
           
           if (!full) {
             setThreads(prev => prev.map(t => {
               if (t.id !== thread.id) return t;
-              const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: 'No response from Puter.js' } : msg);
+              const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: 'No response from Puter.js', provider: 'puter', usedKeyType: 'none' as const, ...timing } : msg);
               return { ...t, messages: msgs };
             }));
           } else {
@@ -160,7 +177,7 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
               const chunk = full.slice(0, i);
               setThreads(prev => prev.map(t => {
                 if (t.id !== thread.id) return t;
-                const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk, provider: 'puter', usedKeyType: 'none' as const } : msg);
+                const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk, provider: 'puter', usedKeyType: 'none' as const, ...timing } : msg);
                 return { ...t, messages: msgs };
               }));
               if (i >= full.length) window.clearInterval(timer);
@@ -168,8 +185,9 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
           }
         } else {
           const placeholderTs = Date.now();
+          const startTime = Date.now();
           const initialText = 'Thinking…';
-          const placeholder: ChatMessage = { role: 'assistant', content: initialText, modelId: m.id, ts: placeholderTs };
+          const placeholder: ChatMessage = { role: 'assistant', content: initialText, modelId: m.id, ts: placeholderTs, startTime };
           setThreads(prev => prev.map(t => t.id === thread.id ? { ...t, messages: [...(t.messages ?? nextHistory), placeholder] } : t));
 
           let buffer = '';
@@ -197,9 +215,10 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
           if (isNonImageAttachment) {
             const res = await callOpenRouter({ apiKey: keys.openrouter || undefined, model: m.model, messages: prepareMessages(nextHistory), imageDataUrl, signal: controller.signal });
             const text = extractText(res);
+            const timing = extractTiming(res);
             setThreads(prev => prev.map(t => {
               if (t.id !== thread.id) return t;
-              const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: String(text).trim() } : msg);
+              const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: String(text).trim(), ...timing } : msg);
               return { ...t, messages: msgs };
             }));
             return;
@@ -214,7 +233,14 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
             onMeta: (meta) => {
               setThreads(prev => prev.map(t => {
                 if (t.id !== thread.id) return t;
-                const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, provider: meta.provider, usedKeyType: meta.usedKeyType } as ChatMessage : msg);
+                const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { 
+                  ...msg, 
+                  provider: meta.provider, 
+                  usedKeyType: meta.usedKeyType,
+                  responseTime: meta.responseTime,
+                  startTime: meta.startTime,
+                  endTime: meta.endTime
+                } as ChatMessage : msg);
                 return { ...t, messages: msgs };
               }));
             },
@@ -223,20 +249,42 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
               const text = err.error || 'Error';
               setThreads(prev => prev.map(t => {
                 if (t.id !== thread.id) return t;
-                const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: text, code: err.code, provider: err.provider, usedKeyType: err.usedKeyType } as ChatMessage : msg);
+                const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { 
+                  ...msg, 
+                  content: text, 
+                  code: err.code, 
+                  provider: err.provider, 
+                  usedKeyType: err.usedKeyType,
+                  responseTime: err.responseTime,
+                  startTime: err.startTime,
+                  endTime: err.endTime
+                } as ChatMessage : msg);
                 return { ...t, messages: msgs };
               }));
             },
-            onDone: async () => {
+            onDone: async (timing) => {
               if (flushTimer != null) { window.clearTimeout(flushTimer); flushTimer = null; }
               flush();
+              if (timing) {
+                setThreads(prev => prev.map(t => {
+                  if (t.id !== thread.id) return t;
+                  const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { 
+                    ...msg,
+                    responseTime: timing.responseTime,
+                    startTime: timing.startTime,
+                    endTime: timing.endTime
+                  } as ChatMessage : msg);
+                  return { ...t, messages: msgs };
+                }));
+              }
               if (!gotAny) {
                 try {
                   const res = await callOpenRouter({ apiKey: keys.openrouter || undefined, model: m.model, messages: nextHistory, imageDataUrl, signal: controller.signal });
                   const text = extractText(res);
+                  const fallbackTiming = extractTiming(res);
                   setThreads(prev => prev.map(t => {
                     if (t.id !== thread.id) return t;
-                    const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: String(text).trim() } : msg);
+                    const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: String(text).trim(), ...fallbackTiming } : msg);
                     return { ...t, messages: msgs };
                   }));
                 } catch {}
@@ -279,8 +327,9 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
     const inserts: ChatMessage[] = [];
     for (const m of selectedModels) {
       const ts = Date.now() + Math.floor(Math.random() * 1000);
+      const startTime = Date.now();
       placeholders.push({ model: m, ts });
-      inserts.push({ role: 'assistant', content: '', modelId: m.id, ts });
+      inserts.push({ role: 'assistant', content: '', modelId: m.id, ts, startTime });
     }
     updated.splice(userIdx + 1, 0, ...inserts);
 
@@ -302,10 +351,11 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
         if (m.provider === 'gemini') {
           const res = await callGemini({ apiKey: keys.gemini || undefined, model: m.model, messages: baseHistory, signal: controller.signal });
           const full = String(extractText(res) || '').trim();
+          const timing = extractTiming(res);
           if (!full) {
             setThreads(prev => prev.map(tt => {
               if (tt.id !== t.id) return tt;
-              const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: 'No response' } : msg);
+              const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: 'No response', ...timing } : msg);
               return { ...tt, messages: msgs };
             }));
           } else {
@@ -317,7 +367,7 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
               const chunk = full.slice(0, i);
               setThreads(prev => prev.map(tt => {
                 if (tt.id !== t.id) return tt;
-                const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk } : msg);
+                const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk, ...timing } : msg);
                 return { ...tt, messages: msgs };
               }));
               if (i >= full.length) window.clearInterval(timer);
@@ -327,11 +377,12 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
           // Puter.js models - handle directly in browser
           const res = await callPuter({ model: m.model, messages: baseHistory, signal: controller.signal });
           const full = String(extractText(res) || '').trim();
+          const timing = extractTiming(res);
           
           if (!full) {
             setThreads(prev => prev.map(tt => {
               if (tt.id !== t.id) return tt;
-              const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: 'No response from Puter.js' } : msg);
+              const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: 'No response from Puter.js', provider: 'puter', usedKeyType: 'none' as const, ...timing } : msg);
               return { ...tt, messages: msgs };
             }));
           } else {
@@ -343,7 +394,7 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
               const chunk = full.slice(0, i);
               setThreads(prev => prev.map(tt => {
                 if (tt.id !== t.id) return tt;
-                const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk, provider: 'puter', usedKeyType: 'none' as const } : msg);
+                const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk, provider: 'puter', usedKeyType: 'none' as const, ...timing } : msg);
                 return { ...tt, messages: msgs };
               }));
               if (i >= full.length) window.clearInterval(timer);
@@ -376,7 +427,14 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
             onMeta: (meta) => {
               setThreads(prev => prev.map(tt => {
                 if (tt.id !== t.id) return tt;
-                const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, provider: meta.provider, usedKeyType: meta.usedKeyType } as ChatMessage : msg);
+                const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { 
+                  ...msg, 
+                  provider: meta.provider, 
+                  usedKeyType: meta.usedKeyType,
+                  responseTime: meta.responseTime,
+                  startTime: meta.startTime,
+                  endTime: meta.endTime
+                } as ChatMessage : msg);
                 return { ...tt, messages: msgs };
               }));
             },
@@ -385,20 +443,42 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
               const text = err.error || 'Error';
               setThreads(prev => prev.map(tt => {
                 if (tt.id !== t.id) return tt;
-                const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: text, code: err.code, provider: err.provider, usedKeyType: err.usedKeyType } as ChatMessage : msg);
+                const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { 
+                  ...msg, 
+                  content: text, 
+                  code: err.code, 
+                  provider: err.provider, 
+                  usedKeyType: err.usedKeyType,
+                  responseTime: err.responseTime,
+                  startTime: err.startTime,
+                  endTime: err.endTime
+                } as ChatMessage : msg);
                 return { ...tt, messages: msgs };
               }));
             },
-            onDone: async () => {
+            onDone: async (timing) => {
               if (flushTimer != null) { window.clearTimeout(flushTimer); flushTimer = null; }
               flush();
+              if (timing) {
+                setThreads(prev => prev.map(tt => {
+                  if (tt.id !== t.id) return tt;
+                  const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { 
+                    ...msg,
+                    responseTime: timing.responseTime,
+                    startTime: timing.startTime,
+                    endTime: timing.endTime
+                  } as ChatMessage : msg);
+                  return { ...tt, messages: msgs };
+                }));
+              }
               if (!gotAny) {
                 try {
                   const res = await callOpenRouter({ apiKey: keys.openrouter || undefined, model: m.model, messages: baseHistory, signal: controller.signal });
                   const text = extractText(res);
+                  const fallbackTiming = extractTiming(res);
                   setThreads(prev => prev.map(tt => {
                     if (tt.id !== t.id) return tt;
-                    const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: String(text).trim() } : msg);
+                    const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: String(text).trim(), ...fallbackTiming } : msg);
                     return { ...tt, messages: msgs };
                   }));
                 } catch {}

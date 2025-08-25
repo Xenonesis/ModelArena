@@ -7,6 +7,10 @@ export type ChatMessage = {
   code?: number; // HTTP-like status from backend (e.g., 503)
   provider?: string; // e.g., 'openrouter', 'gemini'
   usedKeyType?: 'user' | 'shared' | 'none';
+  // Response timing information
+  responseTime?: number; // Response time in milliseconds
+  startTime?: number; // When the request started
+  endTime?: number; // When the response completed
 };
 
 export type AiModel = {

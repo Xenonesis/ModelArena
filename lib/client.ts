@@ -76,6 +76,7 @@ export async function callGemini(args: {
   imageDataUrl?: string; 
   signal?: AbortSignal 
 }) {
+  const startTime = Date.now();
   const endpoint = args.model === 'gemini-2.5-pro' ? '/api/gemini-pro' : '/api/gemini';
   const res = await fetch(endpoint, {
     method: 'POST',
@@ -83,7 +84,16 @@ export async function callGemini(args: {
     body: JSON.stringify(args),
     signal: args.signal,
   });
-  return res.json();
+  const endTime = Date.now();
+  const responseTime = endTime - startTime;
+  
+  const result = await res.json();
+  return {
+    ...result,
+    responseTime,
+    startTime,
+    endTime
+  };
 }
 
 // ============================================================================
@@ -96,6 +106,7 @@ export async function callOpenRouter(args: {
   imageDataUrl?: string; 
   signal?: AbortSignal 
 }) {
+  const startTime = Date.now();
   const res = await fetch('/api/openrouter', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -106,14 +117,23 @@ export async function callOpenRouter(args: {
     }),
     signal: args.signal,
   });
-  return res.json();
+  const endTime = Date.now();
+  const responseTime = endTime - startTime;
+  
+  const result = await res.json();
+  return {
+    ...result,
+    responseTime,
+    startTime,
+    endTime
+  };
 }
 
 export type ORStreamHandlers = {
   onToken: (chunk: string) => void;
-  onMeta?: (meta: { provider?: string; usedKeyType?: 'user' | 'shared' | 'none' }) => void;
-  onError?: (err: { error?: string; code?: number; provider?: string; usedKeyType?: 'user' | 'shared' | 'none' }) => void;
-  onDone?: () => void;
+  onMeta?: (meta: { provider?: string; usedKeyType?: 'user' | 'shared' | 'none'; responseTime?: number; startTime?: number; endTime?: number }) => void;
+  onError?: (err: { error?: string; code?: number; provider?: string; usedKeyType?: 'user' | 'shared' | 'none'; responseTime?: number; startTime?: number; endTime?: number }) => void;
+  onDone?: (timing?: { responseTime: number; startTime: number; endTime: number }) => void;
 };
 
 export async function streamOpenRouter(
@@ -126,6 +146,7 @@ export async function streamOpenRouter(
   }, 
   handlers: ORStreamHandlers
 ) {
+  const startTime = Date.now();
   try {
     const res = await fetch('/api/openrouter/stream', {
       method: 'POST',
@@ -138,8 +159,10 @@ export async function streamOpenRouter(
       signal: args.signal,
     });
     if (!res.body) {
-      handlers.onError?.({ error: 'No stream body', code: res.status, provider: 'openrouter' });
-      handlers.onDone?.();
+      const endTime = Date.now();
+      const responseTime = endTime - startTime;
+      handlers.onError?.({ error: 'No stream body', code: res.status, provider: 'openrouter', responseTime, startTime, endTime });
+      handlers.onDone?.({ responseTime, startTime, endTime });
       return;
     }
     const reader = res.body.getReader();
@@ -148,7 +171,9 @@ export async function streamOpenRouter(
     const pump = async (): Promise<void> => {
       const { value, done } = await reader.read();
       if (done) {
-        handlers.onDone?.();
+        const endTime = Date.now();
+        const responseTime = endTime - startTime;
+        handlers.onDone?.({ responseTime, startTime, endTime });
         return;
       }
       buffer += decoder.decode(value, { stream: true });
@@ -159,14 +184,24 @@ export async function streamOpenRouter(
         if (!line.startsWith('data:')) continue;
         const payload = line.slice(5).trim();
         if (payload === '[DONE]') {
-          handlers.onDone?.();
+          const endTime = Date.now();
+          const responseTime = endTime - startTime;
+          handlers.onDone?.({ responseTime, startTime, endTime });
           return;
         }
         try {
           const json = JSON.parse(payload);
           if (typeof json?.delta === 'string' && json.delta) handlers.onToken(json.delta);
-          if (json?.provider || json?.usedKeyType) handlers.onMeta?.(json);
-          if (json?.error) handlers.onError?.({ error: json.error, code: json.code, provider: json.provider, usedKeyType: json.usedKeyType });
+          if (json?.provider || json?.usedKeyType) {
+            const currentTime = Date.now();
+            const responseTime = currentTime - startTime;
+            handlers.onMeta?.({ ...json, responseTime, startTime, endTime: currentTime });
+          }
+          if (json?.error) {
+            const endTime = Date.now();
+            const responseTime = endTime - startTime;
+            handlers.onError?.({ error: json.error, code: json.code, provider: json.provider, usedKeyType: json.usedKeyType, responseTime, startTime, endTime });
+          }
         } catch {
           // ignore individual event parse errors
         }
@@ -175,13 +210,15 @@ export async function streamOpenRouter(
     };
     await pump();
   } catch (err) {
+    const endTime = Date.now();
+    const responseTime = endTime - startTime;
     if (err instanceof DOMException && err.name === 'AbortError') {
-      handlers.onDone?.();
+      handlers.onDone?.({ responseTime, startTime, endTime });
       return;
     }
     const e = err as Error | undefined;
-    handlers.onError?.({ error: e?.message || 'Stream failed', provider: 'openrouter' });
-    handlers.onDone?.();
+    handlers.onError?.({ error: e?.message || 'Stream failed', provider: 'openrouter', responseTime, startTime, endTime });
+    handlers.onDone?.({ responseTime, startTime, endTime });
   }
 }
 
@@ -214,6 +251,7 @@ async function waitForPuter(timeoutMs: number = 15000): Promise<WindowWithPuter[
 
 // Function to call Puter.js AI directly in the browser
 export async function callPuter(args: { model: string; messages: ChatMessage[]; signal?: AbortSignal }) {
+  const startTime = Date.now();
   try {
     if (typeof window === 'undefined') {
       throw new Error('Puter.js is only available in browser environment');
@@ -489,19 +527,30 @@ export async function callPuter(args: { model: string; messages: ChatMessage[]; 
       throw new Error('Puter.js AI chat returned empty response');
     }
 
+    const endTime = Date.now();
+    const responseTime = endTime - startTime;
+
     return {
       text: finalResponse,
       provider: 'puter',
-      usedKeyType: 'none' as const
+      usedKeyType: 'none' as const,
+      responseTime,
+      startTime,
+      endTime
     };
   } catch (error) {
+    const endTime = Date.now();
+    const responseTime = endTime - startTime;
     const errorMessage = error instanceof Error ? error.message : 'Puter.js call failed';
     
     if (errorMessage.includes('401') || errorMessage.includes('Unauthorized')) {
       return {
         error: 'Authentication required - Puter.js is running in anonymous mode',
         provider: 'puter',
-        usedKeyType: 'none' as const
+        usedKeyType: 'none' as const,
+        responseTime,
+        startTime,
+        endTime
       };
     }
     
@@ -509,7 +558,10 @@ export async function callPuter(args: { model: string; messages: ChatMessage[]; 
       return {
         error: 'Puter.js API unavailable (authentication required)',
         provider: 'puter',
-        usedKeyType: 'none' as const
+        usedKeyType: 'none' as const,
+        responseTime,
+        startTime,
+        endTime
       };
     }
     
@@ -517,14 +569,20 @@ export async function callPuter(args: { model: string; messages: ChatMessage[]; 
       return {
         error: 'Puter.js API returned invalid data format',
         provider: 'puter',
-        usedKeyType: 'none' as const
+        usedKeyType: 'none' as const,
+        responseTime,
+        startTime,
+        endTime
       };
     }
     
     return {
       error: errorMessage,
       provider: 'puter',
-      usedKeyType: 'none' as const
+      usedKeyType: 'none' as const,
+      responseTime,
+      startTime,
+      endTime
     };
   }
 }

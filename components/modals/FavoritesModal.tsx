@@ -21,9 +21,17 @@ export default function FavoritesModal({
   const [searchQuery, setSearchQuery] = useState("");
   const [dragOverIndex, setDragOverIndex] = useState<number | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Prevent hydration mismatches
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Lock background scroll while modal is open
   useEffect(() => {
+    if (!isMounted) return;
+    
     if (open) {
       document.body.classList.add("modal-open");
       return () => {
@@ -32,9 +40,9 @@ export default function FavoritesModal({
     } else {
       document.body.classList.remove("modal-open");
     }
-  }, [open]);
+  }, [open, isMounted]);
 
-  if (!open) return null;
+  if (!isMounted || !open) return null;
 
   const allModels = mergeModels(customModels);
   const favoriteModels = favoriteIds

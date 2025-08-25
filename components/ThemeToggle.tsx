@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useMemo } from "react";
+import React, { useState, useCallback, useMemo, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { X, Palette, Sun, Moon, Type, Grid3X3, Star, MessageSquare } from "lucide-react";
 import { useTheme } from "@/lib/themeContext";

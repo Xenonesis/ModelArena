@@ -79,6 +79,20 @@ img, video, iframe {
   scroll-behavior: smooth;
 }
 
+/* Modal scroll lock */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Prevent flash of unstyled content */
+.hydration-safe {
+  visibility: hidden;
+}
+
+.hydration-safe.mounted {
+  visibility: visible;
+}
+
 @media (prefers-reduced-motion: reduce) {
   * {
     animation-duration: 0.01ms !important;

@@ -114,14 +114,16 @@ export const applyTheme = (config: ThemeConfig): void => {
         .trim();
       // Force body font update explicitly (Tailwind base already sets it, but reinforce for debug)
       document.body.style.fontFamily = `${fontPrimary}, system-ui, -apple-system, sans-serif`;
-      console.log("[Theme] Applied font:", config.font, {
-        fontPrimary,
-        fontSecondary,
-        bodyFont: document.body.style.fontFamily,
-        htmlClassList: Array.from(document.documentElement.classList).filter(
-          (c) => c.startsWith("font-")
-        ),
-      });
+      if (process.env.NODE_ENV === 'development') {
+        console.debug("[Theme] Applied font:", config.font, {
+          fontPrimary,
+          fontSecondary,
+          bodyFont: document.body.style.fontFamily,
+          htmlClassList: Array.from(document.documentElement.classList).filter(
+            (c) => c.startsWith("font-")
+          ),
+        });
+      }
     } catch (e) {
       console.warn("[Theme] Font debug failed", e);
     }
@@ -290,15 +292,17 @@ export const contrastRatio = (hex1: string, hex2: string): number => {
   return (lighter + 0.05) / (darker + 0.05);
 };
 
-// Evaluate accent contrast against dark/light base text colors
+// Evaluate accent contrast against appropriate backgrounds
 export const evaluateAccentContrast = (
   accent: AccentColor
 ): { light: number; dark: number } => {
   const accentPrimary = ACCENT_COLORS[accent].primary;
-  // Assume body text colors (#000 for light mode, #fff for dark surfaces)
+  // Test against actual background colors that will be used
+  // Light mode: accent color against white background (#ffffff)
+  // Dark mode: accent color against dark background (#0a0a0a or similar)
   return {
-    light: contrastRatio(accentPrimary, "#000000"),
-    dark: contrastRatio(accentPrimary, "#ffffff"),
+    light: contrastRatio(accentPrimary, "#ffffff"), // accent on white background
+    dark: contrastRatio(accentPrimary, "#0a0a0a"), // accent on dark background
   };
 };
 
@@ -308,14 +312,23 @@ export const logAccentContrastIfLow = (accent: AccentColor): void => {
     const ratios = evaluateAccentContrast(accent);
     const MIN_RATIO = 4.5; // WCAG AA for normal text
     if (ratios.light < MIN_RATIO || ratios.dark < MIN_RATIO) {
-      console.warn(
-        `[Accessibility] Accent '${accent}' contrast warning: light=${ratios.light.toFixed(
-          2
-        )}, dark=${ratios.dark.toFixed(2)} (target >= ${MIN_RATIO})`
-      );
+      // Only warn once per accent color to avoid spam
+      const key = `accent-contrast-${accent}`;
+      if (typeof window !== 'undefined' && !window.sessionStorage?.getItem(key)) {
+        console.warn(
+          `[Accessibility] Accent '${accent}' contrast warning: light=${ratios.light.toFixed(
+            2
+          )}, dark=${ratios.dark.toFixed(2)} (target >= ${MIN_RATIO})`
+        );
+        try {
+          window.sessionStorage?.setItem(key, 'warned');
+        } catch {
+          // Ignore storage errors
+        }
+      }
     } else {
-      // Subtle debug log (could be silenced later)
-      console.log(
+      // Use debug level to reduce noise
+      console.debug(
         `[Accessibility] Accent '${accent}' contrast OK: light=${ratios.light.toFixed(
           2
         )}, dark=${ratios.dark.toFixed(2)}`

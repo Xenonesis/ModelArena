@@ -80,7 +80,7 @@ export default function ChatGrid({
      className="relative rounded-lg border border-white/5 bg-white/5 px-3 lg:px-4 pt-2 overflow-x-auto flex-1 overflow-y-auto pb-28 sm:scroll-stable-gutter">
       {selectedModels.length === 0 ? (
         <div className="p-4 text-zinc-400">
-          Select up to 5 models to compare.
+          Select models to compare.
         </div>
       ) : (
         <div className="min-w-full space-y-3">

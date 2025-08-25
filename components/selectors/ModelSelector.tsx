@@ -6,22 +6,22 @@ import { mergeModels, useCustomModels } from '@/lib/customModels';
 export default function ModelSelector({
   selectedIds,
   onToggle,
-  max = 5,
 }: {
   selectedIds: string[];
   onToggle: (id: string) => void;
-  max?: number;
 }) {
   const [customModels] = useCustomModels();
   const allModels: AiModel[] = useMemo(() => mergeModels(customModels), [customModels]);
-  const disabledIds = useMemo(() => {
-    if (selectedIds.length < max) return new Set<string>();
-    return new Set<string>(allModels.filter(m => !selectedIds.includes(m.id)).map(m => m.id));
-  }, [selectedIds, max, allModels]);
+  const disabledIds = new Set<string>(); // Remove model limit
+
+  // Filter out disabled models unless they're already selected
+  const availableModels = allModels.filter(m => 
+    !m.disabled || selectedIds.includes(m.id)
+  );
 
   return (
     <div className="flex flex-wrap gap-2">
-      {allModels.map((m: AiModel) => {
+      {availableModels.map((m: AiModel) => {
         const selected = selectedIds.includes(m.id);
         const disabled = disabledIds.has(m.id);
         return (
@@ -34,7 +34,7 @@ export default function ModelSelector({
                 ? "accent-selected"
                 : "bg-white/10 border-white/15 text-white hover:bg-white/20"
             } ${disabled ? "opacity-40 cursor-not-allowed" : ""}`}
-            title={disabled ? `Max ${max} models at once` : ""}
+            title={""}
           >
             {selected ? "✓ " : ""}
             {m.label}

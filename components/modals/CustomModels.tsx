@@ -122,8 +122,7 @@ export default function CustomModels({ compact }: CustomModelsProps) {
                     Add custom OpenRouter models
                   </h3>
                   <p className="text-xs md:text-sm text-zinc-400 mt-1">
-                    Add any model slug from OpenRouter. Selection is still
-                    capped at 5 in the picker.
+                    Add any model slug from OpenRouter.
                   </p>
                 </div>
                 <button

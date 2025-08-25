@@ -58,7 +58,7 @@
 
 > **🎨 Built for developers, by developers** - The most advanced AI model comparison platform
 
-ModelArena is a cutting-edge, open-source AI playground that allows you to experiment with and compare multiple AI models side-by-side. Unlike traditional chat interfaces, ModelArena enables you to run up to 5 different AI models simultaneously, compare their outputs, and find the best response for your specific needs.
+ModelArena is a cutting-edge, open-source AI playground that allows you to experiment with and compare multiple AI models side-by-side. Unlike traditional chat interfaces, ModelArena enables you to run multiple AI models simultaneously, compare their outputs, and find the best response for your specific needs.
 
 ### 🏆 **Why Choose ModelArena?**
 
@@ -73,7 +73,7 @@ Built with Next.js 15, TypeScript, and Tailwind CSS, ModelArena provides a moder
 ## ✨ Key Features
 
 ### 🎯 Multi-Model Comparison
-- **📊 Side-by-side comparison** of up to 5 AI models simultaneously
+- **📊 Side-by-side comparison** of multiple AI models simultaneously
 - **⚡ Real-time response comparison** with color-coded outputs
 - **📈 Performance metrics** and response time tracking
 - **🅰️🅱️ A/B testing interface** for prompt optimization

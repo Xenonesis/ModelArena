@@ -1,5 +1,5 @@
 "use client";
-import { MessageSquare, Github, Heart, ExternalLink, Zap, Globe, Sparkles, Star, Code2, Users2, Rocket, ChevronRight, Mail, Twitter, ArrowUpRight, GitCompare, ImageIcon, Users } from "lucide-react";
+import { MessageSquare, Zap, Globe, Star, GitCompare, ImageIcon, Users } from "lucide-react";
 import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
@@ -12,9 +12,11 @@ import { AuroraHero } from "@/components/ui/futurastic-hero-section";
 import MultiOrbitSemiCircle from "@/components/ui/multi-orbit-semi-circle";
 import AnimatedFooter from "@/components/ui/animated-footer";
 
+import { LucideIcon } from "lucide-react";
+
 // Feature card component
 const FeatureCard = ({ icon: Icon, title, description, gradient, index }: {
-  icon: any;
+  icon: LucideIcon;
   title: string;
   description: string;
   gradient: string;

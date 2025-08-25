@@ -10,7 +10,6 @@ import { Menu as MenuIcon } from "lucide-react";
 
 type Props = {
   onOpenMenu: () => void;
-  title?: string;
   authorName?: string;
   authorImageSrc?: string;
   authorLink?: string;
@@ -22,7 +21,6 @@ type Props = {
 
 export default function HeaderBar({
   onOpenMenu,
-  title = "ModelArena",
   authorName = "Xenonesis",
   authorImageSrc = "https://github.com/Xenonesis.png",
   authorLink = "https://github.com/Xenonesis",

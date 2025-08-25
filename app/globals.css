@@ -1,5 +1,47 @@
+/* Production Optimizations */
 @import "tailwindcss";
 @import "tw-animate-css";
+
+/* Critical CSS - Above the fold */
+html {
+  font-display: swap;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Performance optimizations */
+* {
+  box-sizing: border-box;
+}
+
+/* Reduce layout shift */
+img, video, iframe {
+  max-width: 100%;
+  height: auto;
+}
+
+/* GPU acceleration for animations */
+.animate-bounce,
+.animate-spin,
+.animate-pulse,
+.animate-ping {
+  will-change: transform;
+}
+
+/* Optimize scrolling */
+* {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 
 @custom-variant dark (&:is(.dark *));
 

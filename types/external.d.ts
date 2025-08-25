@@ -18,3 +18,39 @@ declare module 'mammoth' {
   };
   export default _default;
 }
+
+// Puter.js global object type definitions
+declare global {
+  interface Window {
+    puter?: {
+      ai: {
+        chat: (message: string, options?: {
+          model?: string;
+          stream?: boolean;
+          temperature?: number;
+          max_tokens?: number;
+        }) => Promise<string>;
+      };
+      print: (value: any) => void;
+      ready?: Promise<void>;
+      isReady?: boolean;
+      version?: string;
+    };
+  }
+}
+
+// Also declare puter as a global variable for direct access
+declare const puter: {
+  ai: {
+    chat: (message: string, options?: {
+      model?: string;
+      stream?: boolean;
+      temperature?: number;
+      max_tokens?: number;
+    }) => Promise<string>;
+  };
+  print: (value: any) => void;
+  ready?: Promise<void>;
+  isReady?: boolean;
+  version?: string;
+} | undefined;

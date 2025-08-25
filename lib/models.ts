@@ -1,6 +1,6 @@
 import { AiModel } from './types';
 
-// Base catalog; user can toggle/select up to 5
+// Base catalog; user can toggle/select models
 export const MODEL_CATALOG: AiModel[] = [
   {
     id: 'gemini-2.5-pro',
@@ -166,5 +166,283 @@ export const MODEL_CATALOG: AiModel[] = [
     model: 'x-ai/grok-3-mini',
   },
   
- 
+  // Puter.js Models - Free AI models accessible through Puter.js
+  // 🚀 COMPLETE PUTER.JS MODEL CATALOG 🚀
+  // All models available through Puter.js platform
+  
+  // 🤖 GPT MODELS
+  {
+    id: 'puter-gpt-4o-mini',
+    label: 'GPT-4o Mini (Puter)',
+    provider: 'puter',
+    model: 'gpt-4o-mini',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-gpt-4o',
+    label: 'GPT-4o (Puter)',
+    provider: 'puter',
+    model: 'gpt-4o',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-o1',
+    label: 'o1 (Puter)',
+    provider: 'puter',
+    model: 'o1',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-o1-mini',
+    label: 'o1 Mini (Puter)',
+    provider: 'puter',
+    model: 'o1-mini',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-o1-pro',
+    label: 'o1 Pro (Puter) - Pro Access Required ⭐',
+    provider: 'puter',
+    model: 'o1-pro',
+    free: false, // Requires pro access
+    disabled: true,
+    // Note: Requires Puter.js Pro/Premium subscription
+  },
+  {
+    id: 'puter-o3',
+    label: 'o3 (Puter)',
+    provider: 'puter',
+    model: 'o3',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-o3-mini',
+    label: 'o3 Mini (Puter)',
+    provider: 'puter',
+    model: 'o3-mini',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-o4-mini',
+    label: 'o4 Mini (Puter)',
+    provider: 'puter',
+    model: 'o4-mini',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-gpt-5',
+    label: 'GPT-5 (Puter)',
+    provider: 'puter',
+    model: 'gpt-5',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-gpt-5-mini',
+    label: 'GPT-5 Mini (Puter)',
+    provider: 'puter',
+    model: 'gpt-5-mini',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-gpt-5-nano',
+    label: 'GPT-5 Nano (Puter)',
+    provider: 'puter',
+    model: 'gpt-5-nano',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-gpt-5-chat-latest',
+    label: 'GPT-5 Chat Latest (Puter) - Limited',
+    provider: 'puter',
+    model: 'gpt-5-chat-latest',
+    free: true,
+    // Note: Has token limit issues
+  },
+  {
+    id: 'puter-gpt-4.1',
+    label: 'GPT-4.1 (Puter)',
+    provider: 'puter',
+    model: 'gpt-4.1',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-gpt-4.1-mini',
+    label: 'GPT-4.1 Mini (Puter)',
+    provider: 'puter',
+    model: 'gpt-4.1-mini',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-gpt-4.1-nano',
+    label: 'GPT-4.1 Nano (Puter)',
+    provider: 'puter',
+    model: 'gpt-4.1-nano',
+    free: true,
+    good: true,
+  },
+  
+  // 🎭 CLAUDE MODELS
+  {
+    id: 'puter-claude-sonnet-4',
+    label: 'Claude Sonnet 4 (Puter)',
+    provider: 'puter',
+    model: 'claude-sonnet-4',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-claude-opus-4',
+    label: 'Claude Opus 4 (Puter)',
+    provider: 'puter',
+    model: 'claude-opus-4',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-claude-3-7-sonnet',
+    label: 'Claude 3.7 Sonnet (Puter)',
+    provider: 'puter',
+    model: 'claude-3-7-sonnet',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-claude-3-5-sonnet',
+    label: 'Claude 3.5 Sonnet (Puter)',
+    provider: 'puter',
+    model: 'claude-3-5-sonnet',
+    free: true,
+    good: true,
+  },
+  
+  // 🔬 DEEPSEEK MODELS
+  {
+    id: 'puter-deepseek-chat',
+    label: 'DeepSeek Chat (Puter)',
+    provider: 'puter',
+    model: 'deepseek-chat',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-deepseek-reasoner',
+    label: 'DeepSeek Reasoner (Puter)',
+    provider: 'puter',
+    model: 'deepseek-reasoner',
+    free: true,
+    good: true,
+  },
+  
+  // 💎 GEMINI MODELS
+  {
+    id: 'puter-gemini-2.0-flash',
+    label: 'Gemini 2.0 Flash (Puter)',
+    provider: 'puter',
+    model: 'gemini-2.0-flash',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-gemini-1.5-flash',
+    label: 'Gemini 1.5 Flash (Puter)',
+    provider: 'puter',
+    model: 'gemini-1.5-flash',
+    free: true,
+    good: true,
+  },
+  
+  // 🦙 META LLAMA MODELS (Using simpler model names)
+  {
+    id: 'puter-llama-3.1-8b',
+    label: 'Llama 3.1 8B (Puter)',
+    provider: 'puter',
+    model: 'llama-3.1-8b',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-llama-3.1-70b',
+    label: 'Llama 3.1 70B (Puter)',
+    provider: 'puter',
+    model: 'llama-3.1-70b',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-llama-3.1-405b',
+    label: 'Llama 3.1 405B (Puter)',
+    provider: 'puter',
+    model: 'llama-3.1-405b',
+    free: true,
+    good: true,
+  },
+  
+  // 🌟 MISTRAL MODELS
+  {
+    id: 'puter-mistral-large-latest',
+    label: 'Mistral Large Latest (Puter)',
+    provider: 'puter',
+    model: 'mistral-large-latest',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-pixtral-large-latest',
+    label: 'Pixtral Large Latest (Puter)',
+    provider: 'puter',
+    model: 'pixtral-large-latest',
+    free: true,
+    good: true,
+  },
+  {
+    id: 'puter-codestral-latest',
+    label: 'Codestral Latest (Puter)',
+    provider: 'puter',
+    model: 'codestral-latest',
+    free: true,
+    good: true,
+  },
+  
+  // 🔷 GOOGLE GEMMA MODELS
+  {
+    id: 'puter-gemma-2-27b-it',
+    label: 'Gemma 2 27B IT (Puter)',
+    provider: 'puter',
+    model: 'google/gemma-2-27b-it',
+    free: true,
+    good: true,
+  },
+  
+  // 🤖 GROK MODELS
+  {
+    id: 'puter-grok-beta',
+    label: 'Grok Beta (Puter)',
+    provider: 'puter',
+    model: 'grok-beta',
+    free: true,
+    good: true,
+  },
+  
+  // 📝 DEFAULT MODEL (for fallback)
+  {
+    id: 'puter-default',
+    label: 'Default Model (Puter)',
+    provider: 'puter',
+    model: '', // Empty model name uses default
+    free: true,
+    good: true,
+  },
+  
 ];

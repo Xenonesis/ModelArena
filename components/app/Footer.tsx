@@ -1,5 +1,5 @@
 "use client";
-import { MessageSquare, Github, Heart, ExternalLink, Zap, Globe, Sparkles, Star, Code2, Users2, Rocket, ChevronRight, Mail, Twitter, ArrowUpRight } from "lucide-react";
+import { Github, Heart, ArrowUpRight, Code2, Zap, Globe, Users2, Rocket } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Logo from "@/components/ui/Logo";

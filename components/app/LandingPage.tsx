@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
-import { motion, useMotionTemplate, useMotionValue, animate } from "framer-motion";
+import { motion, useMotionTemplate, useMotionValue, animate, MotionValue } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
 import { Stars } from "@react-three/drei";
 import {
@@ -10,7 +10,6 @@ import {
   Zap,
   Users,
   Globe,
-  ArrowRight,
   Star,
   GitCompare,
   Image as ImageIcon
@@ -29,16 +28,14 @@ const FeatureCard = ({
   description,
   gradient,
   index,
-  border,
-  boxShadow
+  border
 }: {
   icon: LucideIcon,
   title: string,
   description: string,
   gradient: string,
   index: number,
-  border: any,
-  boxShadow: any
+  border: MotionValue<string>
 }) => (
   <motion.div
     className="group relative overflow-hidden rounded-2xl bg-gray-950/10 backdrop-blur-sm p-8 hover:bg-gray-950/20 transition-all duration-300"
@@ -58,7 +55,6 @@ const FeatureCard = ({
     whileHover={{
       scale: 1.015,
       y: -8,
-      boxShadow,
       transition: { duration: 0.3 }
     }}
     whileTap={{ scale: 0.985 }}
@@ -77,7 +73,7 @@ const FeatureCard = ({
         <Icon className="w-8 h-8 text-white" />
       </motion.div>
       <motion.h3
-        className="text-2xl font-bold text-white mb-4 bg-gradient-to-br from-white to-gray-300 bg-clip-text text-transparent"
+        className="text-2xl font-bold mb-4 bg-gradient-to-br from-white to-gray-300 bg-clip-text text-transparent"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 + index * 0.1 }}
@@ -162,7 +158,6 @@ export default function LandingPage() {
 
   const backgroundImage = useMotionTemplate`radial-gradient(125% 125% at 50% 0%, #020617 50%, ${color})`;
   const border = useMotionTemplate`1px solid ${color}`;
-  const boxShadow = useMotionTemplate`0px 4px 24px ${color}`;
 
   return (
     <motion.div 
@@ -171,7 +166,48 @@ export default function LandingPage() {
     >
       {/* 3D Stars Background */}
       <div className="absolute inset-0 z-0">
-        <Canvas>
+        <Canvas
+          onCreated={(state) => {
+            // Handle context loss gracefully with improved error handling
+            const gl = state.gl;
+            const canvas = gl.domElement;
+            
+            const handleContextLoss = (event: Event) => {
+              event.preventDefault();
+              // Reduce console spam in development
+              if (process.env.NODE_ENV === 'development') {
+                console.info('[Three.js] WebGL context lost, restoring...');
+              }
+              // Prevent default to allow context restoration
+            };
+            
+            const handleContextRestore = () => {
+              if (process.env.NODE_ENV === 'development') {
+                console.info('[Three.js] WebGL context restored successfully');
+              }
+              // Force a re-render after context restoration
+              state.invalidate();
+            };
+            
+            // Add event listeners for context management
+            canvas.addEventListener('webglcontextlost', handleContextLoss, { passive: false });
+            canvas.addEventListener('webglcontextrestored', handleContextRestore);
+            
+            // Cleanup function to remove listeners
+            return () => {
+              canvas.removeEventListener('webglcontextlost', handleContextLoss);
+              canvas.removeEventListener('webglcontextrestored', handleContextRestore);
+            };
+          }}
+          gl={{ 
+            preserveDrawingBuffer: false, 
+            antialias: false,
+            powerPreference: "high-performance",
+            failIfMajorPerformanceCaveat: false
+          }}
+          dpr={[1, 2]} // Limit device pixel ratio for better performance
+          frameloop="demand" // Only render when needed
+        >
           <Stars radius={50} count={2500} factor={4} fade speed={2} />
         </Canvas>
       </div>
@@ -231,7 +267,6 @@ export default function LandingPage() {
               className="mb-6 inline-block rounded-full bg-gray-950/20 px-4 py-2 text-sm font-medium backdrop-blur-sm"
               style={{
                 border,
-                boxShadow,
               }}
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
@@ -279,7 +314,7 @@ export default function LandingPage() {
             viewport={{ once: true, margin: "-50px" }}
           >
             {features.map((feature, index) => (
-              <FeatureCard key={index} {...feature} index={index} border={border} boxShadow={boxShadow} />
+              <FeatureCard key={index} {...feature} index={index} border={border} />
             ))}
           </motion.div>
         </motion.section>

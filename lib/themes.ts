@@ -92,17 +92,17 @@ export const ACCENT_COLORS: Record<AccentColor, AccentDefinition> = {
     id: "crimson",
     name: "Crimson",
     description: "Muted deep red",
-    primary: "#9d1c2b",
-    secondary: "#821624",
-    tertiary: "#66111b",
+    primary: "#a52a2a",
+    secondary: "#8b2323",
+    tertiary: "#6b1d1d",
     background: {
-      primary: "rgba(157, 28, 43, 0.12)",
-      secondary: "rgba(157, 28, 43, 0.045)",
+      primary: "rgba(165, 42, 42, 0.12)",
+      secondary: "rgba(165, 42, 42, 0.045)",
     },
     gradient: {
       light:
-        "linear-gradient(135deg, #d7b4b8 0%, #b94c58 22%, #8f2f3d 48%, #66111b 76%, #3c0b12 100%)",
-      dark: "linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), radial-gradient(68% 58% at 50% 50%, #821624 0%, #66111b 22%, #4a0d14 42%, #320a0f 58%, #21080b 72%, #140507 86%, #090304 100%)",
+        "linear-gradient(135deg, #d7b4b8 0%, #a52a2a 22%, #8b2323 48%, #6b1d1d 76%, #4a1515 100%)",
+      dark: "linear-gradient(0deg, rgba(0,0,0,0.7), rgba(0,0,0,0.7)), radial-gradient(68% 58% at 50% 50%, #8b2323 0%, #6b1d1d 22%, #4a1515 42%, #381212 58%, #270d0d 72%, #170707 86%, #0b0303 100%)",
     },
   },
   emerald: {

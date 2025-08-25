@@ -92,7 +92,7 @@ export default function ModelsModal({
           const free = isFree(m);
           const unc = isUnc(m);
           const selected = selectedIds.includes(m.id);
-          const disabled = !selected && selectedModels.length >= 5;
+          const disabled = false; // Remove 5-model limit
           return (
             <button
               key={m.id}
@@ -118,8 +118,6 @@ export default function ModelsModal({
               title={
                 selected
                   ? "Click to unselect"
-                  : disabled
-                  ? "Limit reached"
                   : "Click to select"
               }
             >
@@ -193,7 +191,7 @@ export default function ModelsModal({
       >
         <div className="px-4 sm:-mx-6 md:-mx-7 lg:-mx-8 sm:px-6 md:px-7 lg:px-8 pt-1 pb-3 mb-3 flex items-center justify-between bg-zinc-900/95 backdrop-blur border-b border-white/10">
           <h3 className="text-base md:text-lg lg:text-xl font-semibold tracking-wide">
-            Select up to 5 models
+            Select models
           </h3>
           <button
             aria-label="Close"
@@ -204,7 +202,7 @@ export default function ModelsModal({
           </button>
         </div>
         <div className="text-xs md:text-sm text-zinc-300 mb-4">
-          Selected: {selectedModels.length}/5
+          Selected: {selectedModels.length}
         </div>
         <div className="space-y-4 flex-1 overflow-y-auto pr-1 scroll-touch safe-inset">
           {customSection}

@@ -12,10 +12,11 @@ export type ChatMessage = {
 export type AiModel = {
   id: string; // unique key in UI
   label: string; // display name
-  provider: 'gemini' | 'openrouter';
+  provider: 'gemini' | 'openrouter' | 'puter';
   model: string; // provider-specific model id
   free?: boolean;
   good?: boolean; // highlight as recommended
+  disabled?: boolean; // hide from general use
 };
 
 export type ApiKeys = {

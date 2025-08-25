@@ -3,8 +3,6 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/next";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import Script from "next/script";
 import { ThemeProvider } from "@/lib/themeContext";
 import ErrorBoundary from "@/components/error/ErrorBoundary";
@@ -76,16 +74,6 @@ export default function RootLayout({
           </GlobalErrorHandler>
         </ErrorBoundary>
         
-         <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          closeOnClick
-          pauseOnHover
-          draggable
-          theme="colored"
-        />
-
         {process.env.NEXT_PUBLIC_VERCEL_ANALYTICS === "1" && (
           <>
             <SpeedInsights />
@@ -93,6 +81,10 @@ export default function RootLayout({
           </>
         )}
         <Script src="https://scripts.simpleanalyticscdn.com/latest.js" />
+        <Script 
+          src="https://js.puter.com/v2/" 
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );

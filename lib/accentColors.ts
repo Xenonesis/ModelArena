@@ -63,15 +63,15 @@ export const ACCENT_COLOR_SYSTEM: Record<AccentColor, AccentColorDefinition> = {
   },
   crimson: {
     interactive: {
-      primary: "#9d1c2b",
-      hover: "#821624",
-      active: "#66111b",
-      focus: "rgba(157, 28, 43, 0.5)",
+      primary: "#8b2323",
+      hover: "#742020",
+      active: "#5d1a1a",
+      focus: "rgba(139, 35, 35, 0.5)",
     },
     highlight: {
-      primary: "#b7851c",
-      secondary: "#946414",
-      subtle: "rgba(183, 133, 28, 0.16)",
+      primary: "#a52a2a",
+      secondary: "#8b2323",
+      subtle: "rgba(165, 42, 42, 0.16)",
     },
     status: {
       success: "#0e9f71",
@@ -80,9 +80,9 @@ export const ACCENT_COLOR_SYSTEM: Record<AccentColor, AccentColorDefinition> = {
       info: "#3374dd",
     },
     glow: {
-      soft: "rgba(192, 34, 52, 0.28)",
-      medium: "rgba(192, 34, 52, 0.45)",
-      strong: "rgba(192, 34, 52, 0.65)",
+      soft: "rgba(165, 42, 42, 0.28)",
+      medium: "rgba(165, 42, 42, 0.45)",
+      strong: "rgba(165, 42, 42, 0.65)",
     },
   },
   emerald: {

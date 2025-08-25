@@ -1,4 +1,4 @@
-import { callGemini, callOpenRouter, streamOpenRouter } from './client';
+import { callGemini, callOpenRouter, streamOpenRouter, callPuter } from './client';
 import { safeUUID } from './uuid';
 import type { AiModel, ApiKeys, ChatMessage, ChatThread } from './types';
 import type { Project } from './projects';
@@ -131,6 +131,36 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
               setThreads(prev => prev.map(t => {
                 if (t.id !== thread.id) return t;
                 const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk } : msg);
+                return { ...t, messages: msgs };
+              }));
+              if (i >= full.length) window.clearInterval(timer);
+            }, 24);
+          }
+        } else if (m.provider === 'puter') {
+          // Puter.js models - handle directly in browser
+          const placeholderTs = Date.now();
+          const placeholder: ChatMessage = { role: 'assistant', content: '', modelId: m.id, ts: placeholderTs };
+          setThreads(prev => prev.map(t => t.id === thread.id ? { ...t, messages: [...(t.messages ?? nextHistory), placeholder] } : t));
+
+          const res = await callPuter({ model: m.model, messages: prepareMessages(nextHistory), signal: controller.signal });
+          const full = String(extractText(res) || '').trim();
+          
+          if (!full) {
+            setThreads(prev => prev.map(t => {
+              if (t.id !== thread.id) return t;
+              const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: 'No response from Puter.js' } : msg);
+              return { ...t, messages: msgs };
+            }));
+          } else {
+            // typewriter effect for Puter.js responses
+            let i = 0;
+            const step = Math.max(2, Math.ceil(full.length / 80));
+            const timer = window.setInterval(() => {
+              i = Math.min(full.length, i + step);
+              const chunk = full.slice(0, i);
+              setThreads(prev => prev.map(t => {
+                if (t.id !== thread.id) return t;
+                const msgs = (t.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk, provider: 'puter', usedKeyType: 'none' as const } : msg);
                 return { ...t, messages: msgs };
               }));
               if (i >= full.length) window.clearInterval(timer);
@@ -288,6 +318,32 @@ export function createChatActions({ selectedModels, keys, threads, activeThread,
               setThreads(prev => prev.map(tt => {
                 if (tt.id !== t.id) return tt;
                 const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk } : msg);
+                return { ...tt, messages: msgs };
+              }));
+              if (i >= full.length) window.clearInterval(timer);
+            }, 24);
+          }
+        } else if (m.provider === 'puter') {
+          // Puter.js models - handle directly in browser
+          const res = await callPuter({ model: m.model, messages: baseHistory, signal: controller.signal });
+          const full = String(extractText(res) || '').trim();
+          
+          if (!full) {
+            setThreads(prev => prev.map(tt => {
+              if (tt.id !== t.id) return tt;
+              const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: 'No response from Puter.js' } : msg);
+              return { ...tt, messages: msgs };
+            }));
+          } else {
+            // typewriter effect for Puter.js responses
+            let i = 0;
+            const step = Math.max(2, Math.ceil(full.length / 80));
+            const timer = window.setInterval(() => {
+              i = Math.min(full.length, i + step);
+              const chunk = full.slice(0, i);
+              setThreads(prev => prev.map(tt => {
+                if (tt.id !== t.id) return tt;
+                const msgs = (tt.messages ?? []).map(msg => (msg.ts === placeholderTs && msg.modelId === m.id) ? { ...msg, content: chunk, provider: 'puter', usedKeyType: 'none' as const } : msg);
                 return { ...tt, messages: msgs };
               }));
               if (i >= full.length) window.clearInterval(timer);

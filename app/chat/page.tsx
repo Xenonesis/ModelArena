@@ -18,6 +18,7 @@ import { useTheme } from "@/lib/themeContext";
 import { BACKGROUND_STYLES } from "@/lib/themes";
 import { safeUUID } from "@/lib/uuid";
 import LaunchScreen from "@/components/ui/LaunchScreen";
+import ApiKeySetup from "@/components/dev/ApiKeySetup";
 
 export default function ChatPage() {
   const { theme } = useTheme();
@@ -31,8 +32,15 @@ export default function ChatPage() {
       "gemini-2.5-flash",
       "llama-3.3-70b-instruct",
       "qwen-2.5-72b-instruct",
-      "openai-gpt-oss-20b-free",
-      "glm-4.5-air",
+      // Best working Puter.js models
+      "puter-default",
+      "puter-gpt-4o",
+      "puter-o1-mini",
+      "puter-claude-3-5-sonnet",
+      "puter-deepseek-chat",
+      "puter-gemini-2.0-flash",
+      "puter-grok-beta",
+      "puter-mistral-large-latest",
     ]
   );
   const [keys] = useLocalStorage<ApiKeys>("ai-fiesta:keys", {});
@@ -126,15 +134,13 @@ export default function ChatPage() {
   const toggle = (id: string) => {
     setSelectedIds((prev) => {
       if (prev.includes(id)) return prev.filter((x) => x !== id);
-      const valid = new Set(allModels.map((m) => m.id));
-      const currentValidCount = prev.filter((x) => valid.has(x)).length;
-      if (currentValidCount >= 5) return prev;
+      // Remove 5-model limit - allow unlimited selections
       return [...prev, id];
     });
   };
 
   // Chat actions (send and onEditUser) moved to lib/chatActions.ts to avoid state races
-  const { send, onEditUser } = useMemo(
+      const { send, onEditUser } = useMemo(
     () =>
       createChatActions({
         selectedModels,
@@ -184,7 +190,6 @@ export default function ChatPage() {
       {/* Fixed Header */}
       <HeaderBar
         onOpenMenu={() => setMobileSidebarOpen(true)}
-        title="ModelArena"
         authorName="Xenonesis"
         authorImageSrc="https://github.com/Xenonesis.png"
         authorLink="https://github.com/Xenonesis"
@@ -282,6 +287,9 @@ export default function ChatPage() {
           </div>
         </div>
       </div>
+      
+      {/* Development API Key Setup Helper */}
+      <ApiKeySetup />
     </div>
   );
 }

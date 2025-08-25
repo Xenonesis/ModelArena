@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { Brain, Cpu, Zap, Bot, Network, Globe, Sparkles, CircuitBoard, Atom, Binary, Code2, Rocket } from "lucide-react";
 
 // Real AI model provider icons with reliable sources
@@ -78,7 +79,13 @@ const AI_MODEL_PROVIDERS = [
   }
 ];
 
-function SemiCircleOrbit({ radius, centerX, centerY, count, iconSize }: any) {
+function SemiCircleOrbit({ radius, centerX, centerY, count, iconSize }: {
+  radius: number;
+  centerX: number;
+  centerY: number;
+  count: number;
+  iconSize: number;
+}) {
   const [imageErrors, setImageErrors] = useState<{[key: number]: boolean}>({});
   const [imageLoaded, setImageLoaded] = useState<{[key: number]: boolean}>({});
 
@@ -159,7 +166,7 @@ function SemiCircleOrbit({ radius, centerX, centerY, count, iconSize }: any) {
                 <FallbackIcon className="w-3/5 h-3/5 text-white drop-shadow-lg" />
               </div>
             ) : (
-              <img
+              <Image
                 src={providerData.icon}
                 alt={`${providerData.name} logo`}
                 width={iconSize}

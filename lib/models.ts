@@ -173,7 +173,7 @@ export const MODEL_CATALOG: AiModel[] = [
   // 🤖 GPT MODELS
   {
     id: 'puter-gpt-4o-mini',
-    label: 'GPT-4o Mini (Puter)',
+    label: 'GPT-4o Mini (ModelArena)',
     provider: 'puter',
     model: 'gpt-4o-mini',
     free: true,
@@ -181,7 +181,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-gpt-4o',
-    label: 'GPT-4o (Puter)',
+    label: 'GPT-4o (ModelArena)',
     provider: 'puter',
     model: 'gpt-4o',
     free: true,
@@ -189,7 +189,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-o1',
-    label: 'o1 (Puter)',
+    label: 'o1 (ModelArena)',
     provider: 'puter',
     model: 'o1',
     free: true,
@@ -197,7 +197,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-o1-mini',
-    label: 'o1 Mini (Puter)',
+    label: 'o1 Mini (ModelArena)',
     provider: 'puter',
     model: 'o1-mini',
     free: true,
@@ -205,7 +205,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-o1-pro',
-    label: 'o1 Pro (Puter) - Pro Access Required ⭐',
+    label: 'o1 Pro (ModelArena) - Pro Access Required ⭐',
     provider: 'puter',
     model: 'o1-pro',
     free: false, // Requires pro access
@@ -214,7 +214,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-o3',
-    label: 'o3 (Puter)',
+    label: 'o3 (ModelArena)',
     provider: 'puter',
     model: 'o3',
     free: true,
@@ -222,7 +222,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-o3-mini',
-    label: 'o3 Mini (Puter)',
+    label: 'o3 Mini (ModelArena)',
     provider: 'puter',
     model: 'o3-mini',
     free: true,
@@ -230,7 +230,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-o4-mini',
-    label: 'o4 Mini (Puter)',
+    label: 'o4 Mini (ModelArena)',
     provider: 'puter',
     model: 'o4-mini',
     free: true,
@@ -238,7 +238,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-gpt-5',
-    label: 'GPT-5 (Puter)',
+    label: 'GPT-5 (ModelArena)',
     provider: 'puter',
     model: 'gpt-5',
     free: true,
@@ -246,7 +246,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-gpt-5-mini',
-    label: 'GPT-5 Mini (Puter)',
+    label: 'GPT-5 Mini (ModelArena)',
     provider: 'puter',
     model: 'gpt-5-mini',
     free: true,
@@ -254,7 +254,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-gpt-5-nano',
-    label: 'GPT-5 Nano (Puter)',
+    label: 'GPT-5 Nano (ModelArena)',
     provider: 'puter',
     model: 'gpt-5-nano',
     free: true,
@@ -262,7 +262,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-gpt-5-chat-latest',
-    label: 'GPT-5 Chat Latest (Puter) - Limited',
+    label: 'GPT-5 Chat Latest (ModelArena) - Limited',
     provider: 'puter',
     model: 'gpt-5-chat-latest',
     free: true,
@@ -270,7 +270,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-gpt-4.1',
-    label: 'GPT-4.1 (Puter)',
+    label: 'GPT-4.1 (ModelArena)',
     provider: 'puter',
     model: 'gpt-4.1',
     free: true,
@@ -278,7 +278,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-gpt-4.1-mini',
-    label: 'GPT-4.1 Mini (Puter)',
+    label: 'GPT-4.1 Mini (ModelArena)',
     provider: 'puter',
     model: 'gpt-4.1-mini',
     free: true,
@@ -286,7 +286,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-gpt-4.1-nano',
-    label: 'GPT-4.1 Nano (Puter)',
+    label: 'GPT-4.1 Nano (ModelArena)',
     provider: 'puter',
     model: 'gpt-4.1-nano',
     free: true,
@@ -296,7 +296,7 @@ export const MODEL_CATALOG: AiModel[] = [
   // 🎭 CLAUDE MODELS
   {
     id: 'puter-claude-sonnet-4',
-    label: 'Claude Sonnet 4 (Puter)',
+    label: 'Claude Sonnet 4 (ModelArena)',
     provider: 'puter',
     model: 'claude-sonnet-4',
     free: true,
@@ -304,7 +304,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-claude-opus-4',
-    label: 'Claude Opus 4 (Puter)',
+    label: 'Claude Opus 4 (ModelArena)',
     provider: 'puter',
     model: 'claude-opus-4',
     free: true,
@@ -312,7 +312,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-claude-3-7-sonnet',
-    label: 'Claude 3.7 Sonnet (Puter)',
+    label: 'Claude 3.7 Sonnet (ModelArena)',
     provider: 'puter',
     model: 'claude-3-7-sonnet',
     free: true,
@@ -320,7 +320,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-claude-3-5-sonnet',
-    label: 'Claude 3.5 Sonnet (Puter)',
+    label: 'Claude 3.5 Sonnet (ModelArena)',
     provider: 'puter',
     model: 'claude-3-5-sonnet',
     free: true,
@@ -330,7 +330,7 @@ export const MODEL_CATALOG: AiModel[] = [
   // 🔬 DEEPSEEK MODELS
   {
     id: 'puter-deepseek-chat',
-    label: 'DeepSeek Chat (Puter)',
+    label: 'DeepSeek Chat (ModelArena)',
     provider: 'puter',
     model: 'deepseek-chat',
     free: true,
@@ -338,7 +338,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-deepseek-reasoner',
-    label: 'DeepSeek Reasoner (Puter)',
+    label: 'DeepSeek Reasoner (ModelArena)',
     provider: 'puter',
     model: 'deepseek-reasoner',
     free: true,
@@ -348,7 +348,7 @@ export const MODEL_CATALOG: AiModel[] = [
   // 💎 GEMINI MODELS
   {
     id: 'puter-gemini-2.0-flash',
-    label: 'Gemini 2.0 Flash (Puter)',
+    label: 'Gemini 2.0 Flash (ModelArena)',
     provider: 'puter',
     model: 'gemini-2.0-flash',
     free: true,
@@ -356,7 +356,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-gemini-1.5-flash',
-    label: 'Gemini 1.5 Flash (Puter)',
+    label: 'Gemini 1.5 Flash (ModelArena)',
     provider: 'puter',
     model: 'gemini-1.5-flash',
     free: true,
@@ -366,7 +366,7 @@ export const MODEL_CATALOG: AiModel[] = [
   // 🦙 META LLAMA MODELS (Using simpler model names)
   {
     id: 'puter-llama-3.1-8b',
-    label: 'Llama 3.1 8B (Puter)',
+    label: 'Llama 3.1 8B (ModelArena)',
     provider: 'puter',
     model: 'llama-3.1-8b',
     free: true,
@@ -374,7 +374,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-llama-3.1-70b',
-    label: 'Llama 3.1 70B (Puter)',
+    label: 'Llama 3.1 70B (ModelArena)',
     provider: 'puter',
     model: 'llama-3.1-70b',
     free: true,
@@ -382,7 +382,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-llama-3.1-405b',
-    label: 'Llama 3.1 405B (Puter)',
+    label: 'Llama 3.1 405B (ModelArena)',
     provider: 'puter',
     model: 'llama-3.1-405b',
     free: true,
@@ -392,7 +392,7 @@ export const MODEL_CATALOG: AiModel[] = [
   // 🌟 MISTRAL MODELS
   {
     id: 'puter-mistral-large-latest',
-    label: 'Mistral Large Latest (Puter)',
+    label: 'Mistral Large Latest (ModelArena)',
     provider: 'puter',
     model: 'mistral-large-latest',
     free: true,
@@ -400,7 +400,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-pixtral-large-latest',
-    label: 'Pixtral Large Latest (Puter)',
+    label: 'Pixtral Large Latest (ModelArena)',
     provider: 'puter',
     model: 'pixtral-large-latest',
     free: true,
@@ -408,7 +408,7 @@ export const MODEL_CATALOG: AiModel[] = [
   },
   {
     id: 'puter-codestral-latest',
-    label: 'Codestral Latest (Puter)',
+    label: 'Codestral Latest (ModelArena)',
     provider: 'puter',
     model: 'codestral-latest',
     free: true,
@@ -418,7 +418,7 @@ export const MODEL_CATALOG: AiModel[] = [
   // 🔷 GOOGLE GEMMA MODELS
   {
     id: 'puter-gemma-2-27b-it',
-    label: 'Gemma 2 27B IT (Puter)',
+    label: 'Gemma 2 27B IT (ModelArena)',
     provider: 'puter',
     model: 'google/gemma-2-27b-it',
     free: true,
@@ -428,7 +428,7 @@ export const MODEL_CATALOG: AiModel[] = [
   // 🤖 GROK MODELS
   {
     id: 'puter-grok-beta',
-    label: 'Grok Beta (Puter)',
+    label: 'Grok Beta (ModelArena)',
     provider: 'puter',
     model: 'grok-beta',
     free: true,
@@ -438,7 +438,7 @@ export const MODEL_CATALOG: AiModel[] = [
   // 📝 DEFAULT MODEL (for fallback)
   {
     id: 'puter-default',
-    label: 'Default Model (Puter)',
+    label: 'Default Model (ModelArena)',
     provider: 'puter',
     model: '', // Empty model name uses default
     free: true,

@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { X, Star } from "lucide-react";
 import type { AiModel } from "@/lib/types";
 import { MODEL_CATALOG } from "@/lib/models";
+import { useFavorites } from "@/lib/useFavorites";
 
 export type ModelsModalProps = {
   open: boolean;
@@ -21,6 +22,8 @@ export default function ModelsModal({
   customModels,
   onToggle,
 }: ModelsModalProps) {
+  const { isFavorite, toggleFavorite } = useFavorites();
+  
   // Lock background scroll while modal is open
   useEffect(() => {
     if (open) {
@@ -49,17 +52,11 @@ export default function ModelsModal({
   };
   const isUnc = (m: AiModel) =>
     /uncensored/i.test(m.label) || /venice/i.test(m.model);
-  const staticFavIds = new Set<string>([
-    "llama-3.3-70b-instruct",
-    "gemini-2.5-pro",
-    "openai-gpt-oss-20b-free",
-    "glm-4.5-air",
-    "moonshot-kimi-k2",
-  ]);
-  const isFav = (m: AiModel) =>
-    selectedIds.includes(m.id) || staticFavIds.has(m.id);
+  
+  const isModelFavorite = (m: AiModel) => isFavorite(m.id);
+  
   const pick = (m: AiModel) => {
-    if (isFav(m)) return "Favorites";
+    if (isModelFavorite(m)) return "Favorites";
     if (isUnc(m)) return "Uncensored";
     if (isFree(m)) return "Free";
     if (m.good) return "Good";
@@ -92,66 +89,88 @@ export default function ModelsModal({
           const free = isFree(m);
           const unc = isUnc(m);
           const selected = selectedIds.includes(m.id);
+          const favorite = isModelFavorite(m);
           const disabled = false; // Remove 5-model limit
           return (
-            <button
-              key={m.id}
-              onClick={() => !disabled && onToggle(m.id)}
-              className={`model-chip flex items-center justify-between gap-2 w-full h-10 sm:h-9 md:h-9 px-3 sm:px-3 md:px-3 text-xs sm:text-[11px] md:text-sm ${
-                disabled ? "opacity-60 cursor-not-allowed text-zinc-500" : ""
-              } ${
-                selected
-                  ? m.good
+            <div key={m.id} className="relative group">
+              <button
+                onClick={() => !disabled && onToggle(m.id)}
+                className={`model-chip flex items-center justify-between gap-2 w-full h-10 sm:h-9 md:h-9 px-3 sm:px-3 md:px-3 text-xs sm:text-[11px] md:text-sm ${
+                  disabled ? "opacity-60 cursor-not-allowed text-zinc-500" : ""
+                } ${
+                  selected
+                    ? m.good
+                      ? "model-chip-pro"
+                      : free
+                      ? "model-chip-free"
+                      : "border-white/20 bg-white/10"
+                    : m.good
                     ? "model-chip-pro"
                     : free
                     ? "model-chip-free"
-                    : "border-white/20 bg-white/10"
-                  : m.good
-                  ? "model-chip-pro"
-                  : free
-                  ? "model-chip-free"
-                  : "border-white/10 bg-white/5 hover:bg-white/10"
-              }`}
-              data-selected={selected || undefined}
-              data-type={m.good ? "pro" : free ? "free" : unc ? "unc" : "other"}
-              {...(disabled ? { "aria-disabled": "true" } : {})}
-              title={
-                selected
-                  ? "Click to unselect"
-                  : "Click to select"
-              }
-            >
-              <span className="pr-1 inline-flex items-center gap-1.5 min-w-0">
-                {showBadges && m.good && (
-                  <span className="badge-base badge-pro inline-flex items-center gap-1 px-1.5 py-0.5">
-                    <Star size={12} className="shrink-0" />
-                    <span className="hidden sm:inline">Pro</span>
-                  </span>
-                )}
-                {showBadges && free && (
-                  <span className="badge-base badge-free inline-flex items-center gap-1 px-1.5 py-0.5">
-                    <span className="h-2 w-2 rounded-full bg-current opacity-80" />
-                    <span className="hidden sm:inline">Free</span>
-                  </span>
-                )}
-                {showBadges && unc && (
-                  <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-rose-500/20 text-rose-200 ring-1 ring-rose-300/30">
-                    <span className="h-2 w-2 rounded-full bg-rose-200" />
-                    <span className="hidden sm:inline">Uncensored</span>
-                  </span>
-                )}
-                <span className="truncate max-w-full">
-                  {m.label}
-                </span>
-              </span>
-              <span
-                className="model-toggle-pill"
-                data-type={m.good ? "pro" : free ? "free" : "other"}
-                data-active={selected || undefined}
+                    : "border-white/10 bg-white/5 hover:bg-white/10"
+                }`}
+                data-selected={selected || undefined}
+                data-type={m.good ? "pro" : free ? "free" : unc ? "unc" : "other"}
+                {...(disabled ? { "aria-disabled": "true" } : {})}
+                title={
+                  selected
+                    ? "Click to unselect"
+                    : "Click to select"
+                }
               >
-                <span className="model-toggle-thumb" />
-              </span>
-            </button>
+                <span className="pr-1 inline-flex items-center gap-1.5 min-w-0">
+                  {showBadges && m.good && (
+                    <span className="badge-base badge-pro inline-flex items-center gap-1 px-1.5 py-0.5">
+                      <Star size={12} className="shrink-0" />
+                      <span className="hidden sm:inline">Pro</span>
+                    </span>
+                  )}
+                  {showBadges && free && (
+                    <span className="badge-base badge-free inline-flex items-center gap-1 px-1.5 py-0.5">
+                      <span className="h-2 w-2 rounded-full bg-current opacity-80" />
+                      <span className="hidden sm:inline">Free</span>
+                    </span>
+                  )}
+                  {showBadges && unc && (
+                    <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full bg-rose-500/20 text-rose-200 ring-1 ring-rose-300/30">
+                      <span className="h-2 w-2 rounded-full bg-rose-200" />
+                      <span className="hidden sm:inline">Uncensored</span>
+                    </span>
+                  )}
+                  <span className="truncate max-w-full">
+                    {m.label}
+                  </span>
+                </span>
+                <span
+                  className="model-toggle-pill"
+                  data-type={m.good ? "pro" : free ? "free" : "other"}
+                  data-active={selected || undefined}
+                >
+                  <span className="model-toggle-thumb" />
+                </span>
+              </button>
+              
+              {/* Favorite Star Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleFavorite(m.id);
+                }}
+                className={`absolute -top-1 -right-1 w-6 h-6 rounded-full border transition-all duration-200 flex items-center justify-center ${
+                  favorite
+                    ? "bg-yellow-500 border-yellow-400 text-yellow-900 hover:bg-yellow-400"
+                    : "bg-black/50 border-white/20 text-white/60 hover:bg-black/70 hover:border-white/30 hover:text-white/80"
+                } opacity-0 group-hover:opacity-100 hover:!opacity-100`}
+                title={favorite ? "Remove from favorites" : "Add to favorites"}
+                aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
+              >
+                <Star 
+                  size={12} 
+                  className={favorite ? "fill-current" : ""} 
+                />
+              </button>
+            </div>
           );
         })}
       </div>

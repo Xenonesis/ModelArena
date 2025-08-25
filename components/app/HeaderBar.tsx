@@ -3,6 +3,7 @@ import Image from "next/image";
 import GithubStar from "@/components/app/GithubStar";
 import ThemeToggle from "@/components/ThemeToggle";
 import CustomModels from "@/components/modals/CustomModels";
+import FavoritesButton from "@/components/modals/FavoritesButton";
 import Settings from "@/components/app/Settings";
 import Logo from "@/components/ui/Logo";
 import { Layers } from "lucide-react";
@@ -80,7 +81,7 @@ export default function HeaderBar({
       </div>
 
       {/* Center Section: Logo */}
-      <div className="flex-1 flex justify-center hidden sm:block px-4">
+      <div className="flex-1 justify-center hidden sm:flex px-4">
         <Logo size="sm" showText={true} animated={false} />
       </div>
 
@@ -96,6 +97,7 @@ export default function HeaderBar({
             <Layers size={14} className="transition-transform duration-200 group-hover:scale-110" />
             <span className="font-medium text-white/90">Models</span>
           </button>
+          <FavoritesButton />
         </div>
         
         <div className="md:hidden">
@@ -110,6 +112,7 @@ export default function HeaderBar({
         </div>
 
         <div className="flex items-center gap-1.5">
+          <FavoritesButton compact />
           <CustomModels compact />
           <ThemeToggle compact />
           <Settings compact />

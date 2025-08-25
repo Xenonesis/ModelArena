@@ -1,5 +1,5 @@
-import LandingPage from "@/components/app/LandingPage";
+import LandingPageWithAnimatedFooter from "@/components/app/LandingPageWithAnimatedFooter";
 
 export default function Home() {
-  return <LandingPage />;
+  return <LandingPageWithAnimatedFooter />;
 }

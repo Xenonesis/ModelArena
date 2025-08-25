@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useMemo, useRef, useState, memo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Eye,
   EyeOff,
@@ -10,6 +11,8 @@ import {
   Save,
   X,
   Star,
+  Sparkles,
+  Zap,
 } from "lucide-react";
 import MarkdownLite from "./MarkdownLite";
 import type { AiModel, ChatMessage } from "@/lib/types";
@@ -215,11 +218,63 @@ const ChatGrid = memo(function ChatGrid({
   return (
     <div
       ref={scrollRef}
-      className="relative rounded-lg border border-white/5 bg-white/5 px-3 lg:px-4 pt-2 overflow-x-auto flex-1 overflow-y-auto pb-28 sm:scroll-stable-gutter">
+      className="relative rounded-lg border border-white/5 bg-white/5 px-2 sm:px-3 lg:px-4 pt-2 overflow-x-auto flex-1 overflow-y-auto pb-32 sm:pb-28 touch-pan-y scroll-smooth"
+      style={{ 
+        WebkitOverflowScrolling: 'touch',
+        scrollBehavior: 'smooth',
+        // Mobile-specific enhancements
+        msOverflowStyle: 'none',
+        scrollbarWidth: 'thin'
+      }}>
       {selectedModels.length === 0 ? (
-        <div className="p-4 text-zinc-400">
-          Select models to compare.
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="flex flex-col items-center justify-center h-full space-y-8 p-8"
+        >
+          {/* Enhanced empty state with animations */}
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="relative"
+          >
+            <div className="w-24 h-24 rounded-full bg-gradient-to-br from-purple-500/20 to-blue-500/20 flex items-center justify-center backdrop-blur-sm border border-white/10">
+              <Sparkles className="w-12 h-12 text-purple-400" />
+            </div>
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-0 rounded-full border-2 border-dashed border-purple-500/30"
+            />
+          </motion.div>
+          
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-center space-y-4"
+          >
+            <h3 className="text-2xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+              Ready to Compare AI Models?
+            </h3>
+            <p className="text-gray-400 max-w-md leading-relaxed">
+              Select your favorite AI models from the toolbar to start comparing their responses side-by-side. 
+              Experience the power of multi-model analysis!
+            </p>
+            
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="flex items-center justify-center space-x-2 text-sm text-purple-400 font-medium"
+            >
+              <Zap className="w-4 h-4" />
+              <span>Click &quot;Models&quot; above to get started</span>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       ) : (
         <div className="min-w-full space-y-3">
           {/* Header row: model labels */}
@@ -239,7 +294,13 @@ const ChatGrid = memo(function ChatGrid({
           </div>
 
           {pairs.map((row, i) => (
-            <div key={i} className="space-y-3">
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: i * 0.05 }}
+              className="space-y-3"
+            >
               {/* Prompt callout */}
               <div className="relative flex items-start justify-between gap-3 px-3 py-2 rounded-lg ring-1 ring-white/10 chat-prompt-accent">
                 <div className="chat-prompt-side" />
@@ -317,17 +378,30 @@ const ChatGrid = memo(function ChatGrid({
                 {selectedModels.map((m) => {
                   const ans = row.answers.find((a) => a.modelId === m.id);
                   const isCollapsed = collapsedIds.includes(m.id);
+                  const isLoading = loadingIds.includes(m.id) || (ans && ["Thinking…", "Typing…"].includes(String(ans.content)));
 
                   return (
-                    <div key={m.id} className="h-full">
-                      <div
+                    <motion.div
+                      key={m.id}
+                      layout
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="h-full"
+                    >
+                      <motion.div
                         className={`group relative rounded-lg ${isCollapsed ? "p-2.5" : "p-3"
-                          } h-full min-h-[140px] flex overflow-hidden ring-1 transition-shadow bg-gradient-to-b from-black/40 to-black/20 ring-white/10 backdrop-blur-[2px] ${isCollapsed ? "cursor-pointer" : "hover:ring-white/20"
-                          }`}
+                          } h-full min-h-[140px] flex overflow-hidden ring-1 transition-all duration-300 bg-gradient-to-b from-black/40 to-black/20 ring-white/10 backdrop-blur-[2px] ${
+                          isCollapsed
+                            ? "cursor-pointer hover:ring-purple-400/30"
+                            : "hover:ring-white/20 hover:shadow-lg"
+                          } ${
+                          isLoading ? "ring-purple-400/40 shadow-lg shadow-purple-500/10" : ""
+                        }`}
                         onClick={() => {
                           if (isCollapsed) handleToggleCollapse(m.id);
                         }}
                         title={isCollapsed ? "Click to expand" : undefined}
+                        whileHover={{ scale: isCollapsed ? 1.02 : 1.01 }}
+                        transition={{ duration: 0.2 }}
                       >
                         {/* decorative overlay removed for cleaner look */}
                         {ans && String(ans.content || "").length > 0 && (
@@ -428,20 +502,38 @@ const ChatGrid = memo(function ChatGrid({
                                 )}
                             </>
                           ) : (loadingIds.includes(m.id) || (ans && ["Thinking…", "Typing…"].includes(String(ans.content)))) ? (
-                            <div className="w-full self-stretch space-y-3">
-                              <div className="inline-flex items-center gap-2 text-[12px] font-medium text-rose-100">
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-rose-500/20 ring-1 ring-rose-300/30">
-                                  <Loader2 className="animate-spin" size={13} />
+                            <motion.div
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              className="w-full self-stretch space-y-3"
+                            >
+                              <motion.div
+                                initial={{ scale: 0.9 }}
+                                animate={{ scale: 1 }}
+                                className="inline-flex items-center gap-2 text-[12px] font-medium text-purple-100"
+                              >
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-purple-500/20 ring-1 ring-purple-300/30">
+                                  <motion.div
+                                    animate={{ rotate: 360 }}
+                                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                                  >
+                                    <Loader2 size={13} />
+                                  </motion.div>
                                   Thinking…
                                 </span>
-                              </div>
-                              <div className="animate-pulse space-y-2">
-                                <div className="h-2.5 w-1/3 rounded accent-bar-faint" />
+                              </motion.div>
+                              <motion.div
+                                className="space-y-2"
+                                initial={{ opacity: 0.5 }}
+                                animate={{ opacity: [0.5, 1, 0.5] }}
+                                transition={{ duration: 2, repeat: Infinity }}
+                              >
+                                <div className="h-2.5 w-1/3 rounded bg-purple-400/20" />
                                 <div className="h-2 rounded bg-white/10" />
                                 <div className="h-2 rounded bg-white/10 w-5/6" />
                                 <div className="h-2 rounded bg-white/10 w-2/3" />
-                              </div>
-                            </div>
+                              </motion.div>
+                            </motion.div>
                           ) : (
                             <span className="text-zinc-400 text-sm">
                               No response
@@ -455,12 +547,12 @@ const ChatGrid = memo(function ChatGrid({
                             </span>
                           </div>
                         )}
-                      </div>
-                    </div>
+                      </motion.div>
+                    </motion.div>
                   );
                 })}
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       )}

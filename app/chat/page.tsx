@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 
 import HeaderBar from "@/components/app/HeaderBar";
@@ -18,6 +19,7 @@ import { useTheme } from "@/lib/themeContext";
 import { BACKGROUND_STYLES } from "@/lib/themes";
 import { safeUUID } from "@/lib/uuid";
 import LaunchScreen from "@/components/ui/LaunchScreen";
+import MobileChatEnhancer from "@/components/ui/mobile-chat-enhancer";
 import ApiKeySetup from "@/components/dev/ApiKeySetup";
 
 export default function ChatPage() {
@@ -198,59 +200,83 @@ export default function ChatPage() {
         onOpenModelsModal={() => setModelsModalOpen(true)}
       />
 
-      {showSplash && (
-        <div className="fixed inset-0 z-[9999]">
-          <LaunchScreen backgroundClass={backgroundClass} dismissed={isHydrated} />
-        </div>
-      )}
+      <AnimatePresence>
+        {showSplash && (
+          <motion.div
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-[9999]"
+          >
+            <LaunchScreen backgroundClass={backgroundClass} dismissed={isHydrated} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+      
       <div className="absolute inset-0 z-0 pointer-events-none opacity-95" />
 
-      <div className="relative z-10 px-3 lg:px-4 pt-20 pb-32">
-        <div className="flex gap-3 lg:gap-4 min-h-[calc(100vh-13rem)]">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="relative z-10 px-2 sm:px-3 lg:px-4 pt-16 sm:pt-20 pb-40 sm:pb-32"
+      >
+        <div className="flex gap-2 sm:gap-3 lg:gap-4 min-h-[calc(100vh-12rem)] sm:min-h-[calc(100vh-13rem)]">
           {/* Sidebar */}
-          <ThreadSidebar
-            sidebarOpen={sidebarOpen}
-            onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
-            threads={visibleThreads}
-            activeId={activeId}
-            onSelectThread={(id) => setActiveId(id)}
-            onNewChat={() => {
-              const t: ChatThread = {
-                id: safeUUID(),
-                title: "New Chat",
-                messages: [],
-                createdAt: Date.now(),
-                projectId: activeProjectId || undefined,
-              };
-              setThreads((prev) => [t, ...prev]);
-              setActiveId(t.id);
-            }}
-            mobileSidebarOpen={mobileSidebarOpen}
-            onCloseMobile={() => setMobileSidebarOpen(false)}
-            onOpenMobile={() => setMobileSidebarOpen(true)}
-            onDeleteThread={(id) => {
-              setThreads((prev) => {
-                const next = prev.filter((t) => t.id !== id);
-                if (activeId === id) {
-                  const nextInScope = (activeProjectId
-                    ? next.find((t) => t.projectId === activeProjectId)
-                    : next[0])?.id ?? null;
-                  setActiveId(nextInScope);
-                }
-                return next;
-              });
-            }}
-            // Projects (from main)
-            projects={projects}
-            activeProjectId={activeProjectId}
-            onSelectProject={selectProject}
-            onCreateProject={createProject}
-            onUpdateProject={updateProject}
-            onDeleteProject={deleteProject}
-          />
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.2, duration: 0.5 }}
+          >
+            <ThreadSidebar
+              sidebarOpen={sidebarOpen}
+              onToggleSidebar={() => setSidebarOpen(!sidebarOpen)}
+              threads={visibleThreads}
+              activeId={activeId}
+              onSelectThread={(id) => setActiveId(id)}
+              onNewChat={() => {
+                const t: ChatThread = {
+                  id: safeUUID(),
+                  title: "New Chat",
+                  messages: [],
+                  createdAt: Date.now(),
+                  projectId: activeProjectId || undefined,
+                };
+                setThreads((prev) => [t, ...prev]);
+                setActiveId(t.id);
+              }}
+              mobileSidebarOpen={mobileSidebarOpen}
+              onCloseMobile={() => setMobileSidebarOpen(false)}
+              onOpenMobile={() => setMobileSidebarOpen(true)}
+              onDeleteThread={(id) => {
+                setThreads((prev) => {
+                  const next = prev.filter((t) => t.id !== id);
+                  if (activeId === id) {
+                    const nextInScope = (activeProjectId
+                      ? next.find((t) => t.projectId === activeProjectId)
+                      : next[0])?.id ?? null;
+                    setActiveId(nextInScope);
+                  }
+                  return next;
+                });
+              }}
+              // Projects (from main)
+              projects={projects}
+              activeProjectId={activeProjectId}
+              onSelectProject={selectProject}
+              onCreateProject={createProject}
+              onUpdateProject={updateProject}
+              onDeleteProject={deleteProject}
+            />
+          </motion.div>
 
           {/* Main content */}
-          <div className="flex-1 min-w-0 flex flex-col min-h-full overflow-visible">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.5 }}
+            className="flex-1 min-w-0 flex flex-col min-h-full overflow-visible"
+          >
             {/* Selected models row + actions */}
             <SelectedModelsBar selectedModels={selectedModels} onToggle={toggle} />
 
@@ -284,12 +310,19 @@ export default function ChatPage() {
             />
 
             <FixedInputBar onSubmit={send} loading={anyLoading} />
-          </div>
+          </motion.div>
         </div>
-      </div>
+      </motion.div>
       
       {/* Development API Key Setup Helper */}
       <ApiKeySetup />
+      
+      {/* Mobile Chat Enhancements */}
+      <MobileChatEnhancer 
+        isLoading={anyLoading}
+        messageCount={messages.length}
+        onScrollToTop={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+      />
     </div>
   );
 }

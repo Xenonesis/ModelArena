@@ -1,5 +1,5 @@
 "use client";
-import { Star } from "lucide-react";
+import { Star, X } from "lucide-react";
 import type { AiModel } from "@/lib/types";
 
 type Props = {
@@ -17,10 +17,9 @@ export default function SelectedModelsBar({ selectedModels, onToggle }: Props) {
           const isUncensored =
             /uncensored/i.test(m.label) || /venice/i.test(m.model);
           return (
-            <button
+            <div
               key={m.id}
-              onClick={() => onToggle(m.id)}
-              className={`model-chip text-white ${
+              className={`model-chip text-white relative group ${
                 m.good
                   ? "model-chip-pro"
                   : isFree
@@ -29,7 +28,6 @@ export default function SelectedModelsBar({ selectedModels, onToggle }: Props) {
               }`}
               data-selected={true}
               data-type={m.good ? "pro" : isFree ? "free" : "other"}
-              title="Click to toggle"
             >
               {m.good && (
                 <span className="badge-base badge-pro inline-flex items-center gap-1 px-1.5 py-0.5">
@@ -57,7 +55,20 @@ export default function SelectedModelsBar({ selectedModels, onToggle }: Props) {
               >
                 <span className="model-toggle-thumb" />
               </span>
-            </button>
+              
+              {/* Delete Button */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onToggle(m.id);
+                }}
+                className="absolute -top-1 -right-1 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-200 border border-red-400 shadow-lg z-10"
+                title={`Remove ${m.label}`}
+                aria-label={`Remove ${m.label} from selection`}
+              >
+                <X size={12} />
+              </button>
+            </div>
           );
         })}
         {selectedModels.length === 0 && (

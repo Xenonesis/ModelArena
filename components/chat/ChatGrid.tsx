@@ -268,7 +268,7 @@ const ChatGrid = memo(function ChatGrid({
                         </button>
                         <button
                           onClick={handleCancelEdit}
-                          className="icon-btn h-7 w-7 accent-focus"
+                          className="icon-btn h-7 w-7 accent-focus bg-red-500/20 hover:bg-red-500/30 border-red-400/30 text-red-200"
                           title="Cancel"
                         >
                           <X size={14} />

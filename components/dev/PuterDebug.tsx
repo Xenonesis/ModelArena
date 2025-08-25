@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { AlertCircle, CheckCircle, RefreshCw, Zap, Terminal, Info } from 'lucide-react';
-import { getPuterStatus, testAllPuterModels, callPuter } from '@/lib/client';
+import { getPuterStatus, callPuter } from '@/lib/client';
 
 interface PuterStatus {
   available: boolean;
@@ -188,24 +188,6 @@ export default function PuterDebug() {
             >
               <Terminal className="w-4 h-4" />
               {isTestingAI ? 'Testing...' : 'Test AI Chat (Official)'}
-            </button>
-
-            <button
-              onClick={async () => {
-                try {
-                  const result = await testAllPuterModels();
-                  console.log('🧪 Comprehensive Puter.js Test Results:', result);
-                  setTestResult(`✅ Model Discovery Complete: ${result.discovered.allModels.length} models found`);
-                } catch (error) {
-                  const errorMsg = error instanceof Error ? error.message : 'Unknown error';
-                  setTestResult(`❌ Discovery Error: ${errorMsg}`);
-                }
-              }}
-              disabled={!status.hasAI}
-              className="w-full px-3 py-2 text-sm bg-green-600 hover:bg-green-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded transition-colors flex items-center justify-center gap-2"
-            >
-              <Zap className="w-4 h-4" />
-              Discover All Models
             </button>
 
             {testResult && (

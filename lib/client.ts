@@ -219,10 +219,7 @@ export async function callPuter(args: { model: string; messages: ChatMessage[]; 
       throw new Error('Puter.js is only available in browser environment');
     }
 
-    // Debug logging
-    if (process.env.NODE_ENV === 'development') {
-      console.log('🔄 callPuter called with:', { model: args.model, messageCount: args.messages.length });
-    }
+
 
     // Check if Puter.js script is loaded
     if (typeof window.puter === 'undefined') {
@@ -236,9 +233,7 @@ export async function callPuter(args: { model: string; messages: ChatMessage[]; 
       throw new Error('Puter.js not ready. Please refresh the page and try again.');
     }
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log('✅ Puter.js loaded successfully');
-    }
+
 
     const lastUserMessage = args.messages
       .filter(msg => msg.role === 'user')
@@ -252,9 +247,7 @@ export async function callPuter(args: { model: string; messages: ChatMessage[]; 
       throw new Error('Puter.js AI functionality not available. Please check your internet connection.');
     }
 
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`🚀 Calling Puter.js AI with model: ${args.model || 'default'}`);
-    }
+
     
     let response;
     
@@ -280,15 +273,6 @@ export async function callPuter(args: { model: string; messages: ChatMessage[]; 
       }
     } catch (puterError: unknown) {
       // Handle specific Puter.js errors
-      if (process.env.NODE_ENV === 'development') {
-        console.error('❌ Puter.js AI call failed:', puterError);
-        
-        if (puterError && typeof puterError === 'object') {
-          console.log('🔍 DEBUG: Error object keys:', Object.keys(puterError));
-          console.log('🔍 DEBUG: Error object JSON:', JSON.stringify(puterError, null, 2));
-        }
-      }
-      
       let errorMessage = 'Unknown Puter.js error';
       
       if (puterError instanceof Error) {
@@ -322,7 +306,9 @@ export async function callPuter(args: { model: string; messages: ChatMessage[]; 
       // Try with default model if specific model fails
       if (args.model && args.model !== 'gpt-4.1-nano') {
         if (process.env.NODE_ENV === 'development') {
+        if (process.env.NODE_ENV === 'development') {
           console.log('🔄 Retrying with default model...');
+        }
         }
         try {
           response = await puterObj.ai.chat(lastUserMessage.content);
@@ -337,15 +323,7 @@ export async function callPuter(args: { model: string; messages: ChatMessage[]; 
     
     let finalResponse: string | undefined;
     
-    if (process.env.NODE_ENV === 'development') {
-      console.log(`🔍 DEBUG: Raw Puter.js response for model "${args.model || 'default'}":`, response);
-      console.log(`🔍 DEBUG: Response type:`, typeof response);
-      
-      if (response && typeof response === 'object') {
-        console.log(`🔍 DEBUG: Response keys:`, Object.keys(response));
-        console.log(`🔍 DEBUG: Response JSON:`, JSON.stringify(response, null, 2));
-      }
-    }
+
 
     if (typeof response === 'string') {
       finalResponse = response;
@@ -742,198 +720,3 @@ export function getPuterStatus(): { available: boolean; version?: string; hasAI:
   }
 }
 
-export async function testPuterModels(models: string[]): Promise<Record<string, { success: boolean; error?: string; response?: string }>> {
-  console.log(`🧪 Starting systematic test of ${models.length} Puter.js models...`);
-  
-  const status = getPuterStatus();
-  console.log('🔍 Puter.js Status:', status);
-  
-  if (!status.available || !status.hasAI) {
-    console.error('❌ Puter.js not available or AI not accessible');
-    return {};
-  }
-  
-  const results: Record<string, { success: boolean; error?: string; response?: string }> = {};
-  
-  for (const model of models) {
-    const modelLabel = model || 'default';
-    console.log(`\n🔍 Testing model: "${model}" (${modelLabel})`);
-    
-    try {
-      const testMessage = { role: 'user' as const, content: `Say "Hello from ${modelLabel}" and tell me what model you are.`, ts: Date.now() };
-      const result = await callPuter({ model, messages: [testMessage] });
-      
-      if (result.text) {
-        results[modelLabel] = { success: true, response: result.text.slice(0, 150) + '...' };
-        console.log(`✅ ${modelLabel}: SUCCESS`);
-        console.log(`   Response: ${result.text.slice(0, 100)}...`);
-      } else if (result.error) {
-        results[modelLabel] = { success: false, error: result.error };
-        console.log(`❌ ${modelLabel}: ERROR - ${result.error}`);
-      } else {
-        results[modelLabel] = { success: false, error: 'Unknown response format' };
-        console.log(`❌ ${modelLabel}: UNKNOWN FORMAT`);
-      }
-    } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : 'Unknown error';
-      results[modelLabel] = { success: false, error: errorMsg };
-      console.log(`❌ ${modelLabel}: EXCEPTION - ${errorMsg}`);
-    }
-    
-    await new Promise(resolve => setTimeout(resolve, 2000));
-  }
-  
-  console.log('\n📊 Test Results Summary:');
-  console.table(results);
-  
-  return results;
-}
-
-export async function testAllPuterModels(): Promise<{
-  discovered: PuterDiscoveryResult;
-  tested: Record<string, { success: boolean; error?: string; response?: string }>;
-}> {
-  console.log('\n🚀 Starting comprehensive Puter.js model discovery and testing...\n');
-  
-  const discovered = await discoverPuterModels();
-  console.log('\n📊 Discovery Results:');
-  console.log('Authentication Status:', discovered.authStatus);
-  console.log('Models by Provider:', discovered.byProvider);
-  console.log('All Models Count:', discovered.allModels.length);
-  console.log('Providers:', discovered.providers);
-  
-  const modelsToTest = new Set<string>();
-  
-  Object.values(discovered.byProvider).forEach((models: string[]) => {
-    if (Array.isArray(models)) {
-      models.forEach((model: string) => modelsToTest.add(model));
-    }
-  });
-  
-  discovered.allModels.forEach((model: PuterModel) => {
-    if (typeof model === 'string') {
-      modelsToTest.add(model);
-    } else if (model?.id) {
-      modelsToTest.add(model.id);
-    } else if (model?.name) {
-      modelsToTest.add(model.name);
-    }
-  });
-  
-  const commonModels = [
-    'gpt-4', 'gpt-4-turbo', 'gpt-3.5-turbo', 'claude-3-opus', 'claude-3-sonnet', 
-    'claude-3-haiku', 'gemini-pro', 'mixtral-8x7b', 'llama-2-70b', 'llama-3-8b',
-    'default', '', 'gpt-4.1-nano', 'claude'
-  ];
-  
-  commonModels.forEach(model => modelsToTest.add(model));
-  
-  const modelArray = Array.from(modelsToTest);
-  console.log(`\n🧪 Testing ${modelArray.length} discovered models...`);
-  console.log('Models to test:', modelArray);
-  
-  const tested = await testPuterModels(modelArray);
-  
-  return {
-    discovered,
-    tested
-  };
-}
-
-// Enhanced test function for specific providers
-export async function testSpecificProviders(): Promise<{
-  working: string[];
-  failed: string[];
-  deepseek: string[];
-  gemini: string[];
-  grok: string[];
-}> {
-  console.log('\n🎯 Testing specific provider models: DeepSeek, Gemini, Xai/Grok...\n');
-  
-  const targetModels = [
-    // DeepSeek models
-    'deepseek', 'deepseek-r1', 'deepseek-chat', 'deepseek-coder', 'deepseek-v3', 
-    'deepseek-r1-distill-llama-70b', 'deepseek-v2', 'deepseek-v2.5',
-    
-    // Gemini models via Puter.js
-    'gemini', 'gemini-pro', 'gemini-1.5-pro', 'gemini-1.5-flash', 'gemini-2.0', 
-    'gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-flash', 'gemini-ultra',
-    
-    // Xai/Grok models
-    'grok', 'grok-beta', 'grok-2', 'grok-3', 'grok-mini', 'xai-grok', 
-    'x-ai-grok', 'grok-1', 'grok-1.5', 'grok-vision',
-    
-    // Also test existing models to verify they still work
-    '', 'gpt-4.1-nano', 'claude'
-  ];
-  
-  const results = await testPuterModels(targetModels);
-  
-  // Categorize results
-  const working = Object.entries(results)
-    .filter(([, result]) => result.success)
-    .map(([model]) => model);
-    
-  const failed = Object.entries(results)
-    .filter(([, result]) => !result.success)
-    .map(([model]) => model);
-    
-  const deepseek = working.filter(model => model.toLowerCase().includes('deepseek'));
-  const gemini = working.filter(model => model.toLowerCase().includes('gemini'));
-  const grok = working.filter(model => 
-    model.toLowerCase().includes('grok') || 
-    model.toLowerCase().includes('xai') || 
-    model.toLowerCase().includes('x-ai')
-  );
-  
-  console.log('\n🏷️ Results by Provider:');
-  console.log(`🔬 DeepSeek Models (${deepseek.length}):`, deepseek);
-  console.log(`💎 Gemini Models (${gemini.length}):`, gemini);
-  console.log(`🤖 Grok/Xai Models (${grok.length}):`, grok);
-  console.log(`✅ All Working (${working.length}):`, working);
-  console.log(`❌ Failed (${failed.length}):`, failed);
-  
-  return {
-    working,
-    failed,
-    deepseek,
-    gemini,
-    grok
-  };
-}
-
-// ============================================================================
-// BROWSER CONSOLE UTILITIES
-// ============================================================================
-if (typeof window !== 'undefined') {
-  const globalWindow = window as typeof window & {
-    testPuterModels: typeof testPuterModels;
-    testAllPuterModels: typeof testAllPuterModels;
-    testSpecificProviders: typeof testSpecificProviders;
-    getPuterStatus: typeof getPuterStatus;
-    puterStatus: typeof getPuterStatus;
-    callPuter: typeof callPuter;
-    puterAuth: typeof puterAuth;
-    discoverPuterModels: typeof discoverPuterModels;
-  };
-  
-  globalWindow.testPuterModels = testPuterModels;
-  globalWindow.testAllPuterModels = testAllPuterModels;
-  globalWindow.testSpecificProviders = testSpecificProviders;
-  globalWindow.getPuterStatus = getPuterStatus;
-  globalWindow.puterStatus = getPuterStatus;
-  globalWindow.callPuter = callPuter;
-  globalWindow.puterAuth = puterAuth;
-  globalWindow.discoverPuterModels = discoverPuterModels;
-  
-  console.log('🧪 Enhanced Puter.js functions loaded:');
-  console.log('   - getPuterStatus() - Check Puter.js availability and auth status');
-  console.log('   - puterAuth.signIn() - Sign in with Puter.js popup');
-  console.log('   - puterAuth.signOut() - Sign out from Puter.js');
-  console.log('   - puterAuth.getAuthStatus() - Get current auth status');
-  console.log('   - discoverPuterModels() - Discover all available models');
-  console.log('   - testAllPuterModels() - Full discovery and testing');
-  console.log('   - testSpecificProviders() - Test DeepSeek, Gemini, Grok models');
-  console.log('   - testPuterModels([...models]) - Test specific models');
-  console.log('   - callPuter({model, messages}) - Direct API call');
-}
